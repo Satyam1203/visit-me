@@ -6,7 +6,8 @@ let Schedule = require('../db_model/appt_schedule');
 
 // Shop closing and opening times
 let OPEN_TIME_HR = 9,
-    CLOSE_TIME_HR = 18;
+    CLOSE_TIME_HR = 18,
+    MAX_ALLOWED = 5;
 
 routes.post("/add-appt", (req,res)=>{
     name=req.body.name;
@@ -46,7 +47,7 @@ routes.post("/add-appt", (req,res)=>{
         }
         else {
             // console.log(schedule)
-            if(schedule.count >= 5){
+            if(schedule.count >= MAX_ALLOWED){
                 res.json({err: "Cannot be alloted! Slot full"})
             }else{
                 Detail.create({
@@ -56,6 +57,31 @@ routes.post("/add-appt", (req,res)=>{
                     else res.json(dt);
                 })
             }
+        }
+    })
+})
+
+routes.post("/schedule", (req,res)=>{
+    date=req.body.date;
+    availableTimings=[];
+    Schedule.findOne({
+        Date: date
+    }, (err,schedule)=>{
+        console.log(schedule);
+        if(err) res.status(404).json({err: "Error occured"});
+        else if(!schedule){
+            for (let i = OPEN_TIME_HR; i < CLOSE_TIME_HR; i++) {
+                availableTimings = [...availableTimings, [`${i}:00`, `${i+1}:00`]];
+            }
+            res.json({"timings":availableTimings});
+        }else{
+            for (let i = OPEN_TIME_HR; i < CLOSE_TIME_HR; i++) {
+                if(Number(schedule.stTime.slice(0,2))===i){
+                    if(schedule.count < MAX_ALLOWED) availableTimings = [...availableTimings, [`${i}:00`, `${i+1}:00`]];
+                } else
+                    availableTimings = [...availableTimings, [`${i}:00`, `${i+1}:00`]];
+            }
+            res.json({"timings":availableTimings});
         }
     })
 })

@@ -19,6 +19,7 @@ app.use(cors());
 // Routes
 app.get("/", (req,res)=>{res.send("helllo")})
 app.post("/add-appt", indexRoutes);
+app.post("/schedule", indexRoutes);
 
 // For non-existing routes
 app.use((req,res)=>res.status(404).send("Not found"));
