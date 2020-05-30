@@ -14,6 +14,8 @@ routes.post("/add-appt", (req,res)=>{
     purpose=req.body.purpose;
     aDate=req.body.date;
     aTime=req.body.time;
+    phone=req.body.phone;
+    email=req.body.email;
     hour=Number(aTime.slice(0,2));
     // console.log(hour);
     if( hour < OPEN_TIME_HR || hour >= CLOSE_TIME_HR ){
@@ -57,6 +59,19 @@ routes.post("/add-appt", (req,res)=>{
                     else res.json(dt);
                 })
             }
+        }
+    })
+})
+
+routes.post("/show-appt", (req,res)=>{
+    email = req.body.email;
+    Detail.find({
+        email
+    }, (err, detail)=>{
+        if(err) res.status(404).json({err: "Error while displaying your appointments"})
+        else if(detail.length===0) res.json({err: "No appointments exist for this email id"})
+        else {
+            res.json({detail});
         }
     })
 })

@@ -5,6 +5,8 @@ let apptDetailSchema = new mongoose.Schema({
     purpose: String,
     aDate: String,
     aTime: String,
+    phone: String,
+    email: String,
     bookingDate: {type: Date, default: Date.now()}
 });
 
