@@ -1,4 +1,5 @@
-let routes = require('express').Router();
+let routes = require('express').Router(),
+    mongoose = require('mongoose');
 
 // Database models
 let Detail = require('../db_model/appt_detail');
@@ -16,6 +17,7 @@ routes.post("/add-appt", (req,res)=>{
     aTime=req.body.time;
     phone=req.body.phone;
     email=req.body.email;
+    // console.log(name, aDate, aTime, email);
     hour=Number(aTime.slice(0,2));
     // console.log(hour);
     if( hour < OPEN_TIME_HR || hour >= CLOSE_TIME_HR ){
@@ -72,6 +74,58 @@ routes.post("/show-appt", (req,res)=>{
         else if(detail.length===0) res.json({err: "No appointments exist for this email id"})
         else {
             res.json({detail});
+        }
+    })
+})
+
+routes.post("/remove-appt/:id", (req,res)=>{
+    id = mongoose.Types.ObjectId(`${req.params.id}`);
+    // email = req.body.email;
+    // console.log(id);
+    // Schedule.findOneAndUpdate({
+    //     _id:id
+    // }, {
+    //     $dec: {count:1}
+    // }
+    // ,(err, schedule)=>{
+    //     if(err) res.status(404).json({err:"Error while count-=1"});
+    //     else {
+    //         // console.log(schedule)
+    //         if(schedule.count === 0){
+    //             Schedule.deleteOne({_id: schedule._id});
+    //         }
+    //         Detail.deleteOne({
+    //             email, aTime: schedule.stTime
+    //         }, (err, dt)=>{
+    //             if(err) res.status(404).json({err: "Error while adding detail"});
+    //             else res.json({err: "Appointment cancelled successfully"});
+    //         })
+    //     }
+    // })
+    Detail.findOneAndDelete({
+        _id:id
+    }, (err, dt)=>{
+        if(err) res.status(404).json({err: "Error while removing detail"});
+        else {
+            time=`${dt.aTime.slice(0,2)}:00`;
+            Schedule.findOneAndUpdate({
+                stTime: time, Date: dt.aDate
+            }, {
+                $inc: {count:-1}
+            }
+            ,(err, schedule)=>{
+                if(schedule.count === 1) {
+                    console.log(schedule._id);
+                    Schedule.deleteOne({_id: mongoose.Types.ObjectId(`${schedule._id}`)}, (err,dt)=>{
+                        if(err) res.status(404).json({err: "Failed deleting schedule"});
+                    })
+                }
+                if(err) res.status(404).json({err:"Error while count-=1"});
+                else if(!schedule) res.json({err: "Could not remove appointment now"});
+                else {
+                    res.json({err: "Appointment cancelled successfully"});
+                }
+            })
         }
     })
 })
