@@ -3,12 +3,14 @@ import React from 'react';
 import './App.css';
 
 import DetailForm from './container/DetailForm';
+import ShowSchedule from './container/ShowSchedule';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <DetailForm/>
+        <ShowSchedule />
       </header>
     </div>
   );
