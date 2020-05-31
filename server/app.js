@@ -2,6 +2,9 @@
 let express = require('express'),
     app = express(),
     cors = require('cors');
+    
+// Start the scheduler 
+require('./config/scheduler').start();
 
 // Import routes
 let indexRoutes = require('./routes/indexRoutes');

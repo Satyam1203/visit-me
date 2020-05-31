@@ -1,5 +1,6 @@
 let routes = require('express').Router(),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    sgMail = require('@sendgrid/mail');
 
 // Database models
 let Detail = require('../db_model/appt_detail');
@@ -10,6 +11,7 @@ let OPEN_TIME_HR = 9,
     CLOSE_TIME_HR = 18,
     MAX_ALLOWED = 5;
 
+// Add appointment route
 routes.post("/add-appt", (req,res)=>{
     name=req.body.name;
     purpose=req.body.purpose;
@@ -42,29 +44,20 @@ routes.post("/add-appt", (req,res)=>{
                 enTime: `${Number(aTime.slice(0,2))+1}:00`,
                 count:1
             })
-            Detail.create({
-                name, purpose, aDate, aTime
-            }, (err, dt)=>{
-                if(err) res.status(404).json({err: "Error while adding detail"});
-                else res.json(dt);
-            })
+            addDetailAndMail(name, purpose, aDate, aTime, phone, email, res);
         }
         else {
             // console.log(schedule)
             if(schedule.count >= MAX_ALLOWED){
                 res.json({err: "Cannot be alloted! Slot full"})
             }else{
-                Detail.create({
-                    name, purpose, aDate, aTime
-                }, (err, dt)=>{
-                    if(err) res.status(404).json({err: "Error while adding detail"});
-                    else res.json(dt);
-                })
+                addDetailAndMail(name, purpose, aDate, aTime, phone, email, res);
             }
         }
     })
 })
 
+// Find appointment with email id
 routes.post("/show-appt", (req,res)=>{
     email = req.body.email;
     Detail.find({
@@ -78,30 +71,9 @@ routes.post("/show-appt", (req,res)=>{
     })
 })
 
+// Cancel my appointment
 routes.post("/remove-appt/:id", (req,res)=>{
     id = mongoose.Types.ObjectId(`${req.params.id}`);
-    // email = req.body.email;
-    // console.log(id);
-    // Schedule.findOneAndUpdate({
-    //     _id:id
-    // }, {
-    //     $dec: {count:1}
-    // }
-    // ,(err, schedule)=>{
-    //     if(err) res.status(404).json({err:"Error while count-=1"});
-    //     else {
-    //         // console.log(schedule)
-    //         if(schedule.count === 0){
-    //             Schedule.deleteOne({_id: schedule._id});
-    //         }
-    //         Detail.deleteOne({
-    //             email, aTime: schedule.stTime
-    //         }, (err, dt)=>{
-    //             if(err) res.status(404).json({err: "Error while adding detail"});
-    //             else res.json({err: "Appointment cancelled successfully"});
-    //         })
-    //     }
-    // })
     Detail.findOneAndDelete({
         _id:id
     }, (err, dt)=>{
@@ -130,6 +102,7 @@ routes.post("/remove-appt/:id", (req,res)=>{
     })
 })
 
+// See number of available appointment for a given date in each slot
 routes.post("/schedule", (req,res)=>{
     date=req.body.date;
     availableTimings=[];
@@ -154,5 +127,29 @@ routes.post("/schedule", (req,res)=>{
         }
     })
 })
+
+// Add Detail to the database and consequently send a mail to them
+const addDetailAndMail = (name, purpose, aDate, aTime, phone, email, res)=>{
+    Detail.create({
+        name, purpose, aDate, aTime, phone, email
+    }, async (err, dt)=>{
+        if(err) res.status(404).json({err: "Error while adding detail"});
+        else {
+            
+            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+            const msg = {
+            to: [email, 'thesarcastics123@gmail.com'],
+            from: 'admin@web-dist.com',
+            subject: 'Reminder- Shop visit',
+            text: `You can visit our store at  your preffered timing`,
+            html: `<p>Date: <strong>${dt.aDate}</strong></p>
+                    <p>Time: <strong>${dt.aTime} - ${dt.aTime.slice(0,2)}:00</strong></p>
+                `,
+            };
+            await sgMail.send(msg);
+            res.json(dt);
+        }
+    })
+}
 
 module.exports = routes;
