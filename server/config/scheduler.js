@@ -28,7 +28,7 @@ let task = cron.schedule('* 1 * * *', () => {
                             text: `You can visit our store at  your preffered timing`,
                             html: `<h4>You had scheduled to visit our store at the mentioned time. Kindly be on time and follow social distancing norms directed by the government</h4>
                                     <p>Date: <strong>${d.aDate}</strong></p>
-                                    <p>Time: <strong>${d.aTime} - ${d.aTime.slice(0,2)}:00</strong></p>
+                                    <p>Time: <strong>${dt.aTime.slice(0,3)}00 - ${Number(dt.aTime.slice(0,2))+1}:00</strong></p>
                                 `,
                         };
                         await sgMail.send(msg);

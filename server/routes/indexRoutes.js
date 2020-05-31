@@ -142,8 +142,9 @@ const addDetailAndMail = (name, purpose, aDate, aTime, phone, email, res)=>{
             from: 'admin@web-dist.com',
             subject: 'Reminder- Shop visit',
             text: `You can visit our store at  your preffered timing`,
-            html: `<p>Date: <strong>${dt.aDate}</strong></p>
-                    <p>Time: <strong>${dt.aTime} - ${dt.aTime.slice(0,2)}:00</strong></p>
+            html: `<p>Dear ${dt.name}, <br/>You can visit our store at the following given time. Our best service is here for your help. Do visit on time. </p>
+                    <p>Date: <strong>${dt.aDate}</strong></p>
+                    <p>Time: <strong>${dt.aTime.slice(0,3)}00 - ${Number(dt.aTime.slice(0,2))+1}:00</strong></p>
                 `,
             };
             await sgMail.send(msg);
