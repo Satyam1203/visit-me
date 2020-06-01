@@ -4,7 +4,7 @@
     height: 50px;
     position: relative;
     overflow: hidden;
-    margin: 20px 0;
+    margin: 20px auto;
 }
 
 .input-div input{

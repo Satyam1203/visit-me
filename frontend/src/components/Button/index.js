@@ -10,18 +10,21 @@ const Button = styled.button`
     font-size:1rem;
     color:#FFF;
     letter-spacing:1px;
-    outline: 0px;
+    outline: none;
     cursor:pointer;
-    border-bottom: 3px solid rgba(189, 168, 245, 0.651);
-    border-right: 1px solid rgba(189, 168, 245, 0.651);
+    box-shadow: 1px 2px 3px 1px grey;
+    // border-bottom: 3px solid rgba(189, 168, 245, 0.651);
+    // border-right: 1px solid rgba(189, 168, 245, 0.651);
     &:active{
-        border-bottom:0;
+        box-shadow: none;
+        // border-bottom: 3px solid transparent;
+        // border-right: 1px solid transparent;
     }
 `;
 
 export default function Index(props) {
     return (
-        <Button>
+        <Button style={{borderRadius: props.borderRadius}}>
             {props.children}
         </Button>
     )

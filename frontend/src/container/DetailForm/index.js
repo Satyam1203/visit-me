@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import './DetailForm.css';
+import './style.css';
 
 import Button from '../../components/Button';
 import Input from '../../components/Input';
@@ -41,7 +41,7 @@ function Index() {
     }
 
     return (
-        <>
+        <div className="add-form">
             <h1>Add a Visiting Schedule</h1>
             {/* {console.log(name, purpose, date, time, phone, email)} */}
             <div className="form-div">
@@ -56,7 +56,7 @@ function Index() {
                 </form>
                 <span ref={error} style={{color:'red'}}></span>
             </div>
-        </>
+        </div>
     )
 }
 
