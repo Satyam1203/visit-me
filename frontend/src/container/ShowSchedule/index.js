@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import TitleBar from '../../components/TitleBar';
 
 const MainDiv = styled.div`
     display: flex;
@@ -21,7 +22,7 @@ function Index() {
         e.preventDefault();
         axios({
             method: 'POST',
-            url:'http://localhost:8080/schedule', 
+            url:`${process.env.REACT_APP_SERVER_URL}/schedule`, 
             data: {
                 date
             }
@@ -46,11 +47,14 @@ function Index() {
 
 
     return (
-        <>
-            <h1>See available list of slots</h1>
+        <div>
+            <TitleBar />
+            <h3 style={{marginTop: '50px'}}>See available list of slots</h3>
             <MainDiv>
                 <form id="form-schedule" onSubmit={show}>
-                    <Input type="date" upLabel="Date" name="date" inputMode="none" onChange={(e)=> setDate(e.target.value)} />
+                    <Input type="date" upLabel="Date" name="date" inputMode="none" onChange={(e)=> setDate(e.target.value)} 
+                        min={`${(new Date()).getFullYear()}-${Number((new Date()).getMonth())<9 ? `0${Number((new Date()).getMonth())+1}` : Number((new Date()).getMonth())+1}-${Number((new Date()).getDate())<10 ? `0${(new Date()).getDate()}` :(new Date()).getDate()}`}    
+                    />
                     <Button type="submit">Submit</Button>
                 </form>
             </MainDiv>
@@ -64,7 +68,7 @@ function Index() {
                 )
             }
             </div>
-        </>
+        </div>
     )
 }
 

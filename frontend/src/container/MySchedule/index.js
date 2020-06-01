@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import TitleBar from '../../components/TitleBar';
 
 const MainDiv = styled.div`
     display: flex;
@@ -21,7 +22,7 @@ function Index() {
         if(e) e.preventDefault();
         axios({
             method: 'POST',
-            url:'http://localhost:8080/show-appt', 
+            url:`${process.env.REACT_APP_SERVER_URL}/show-appt`, 
             data: {
                 email
             }
@@ -47,7 +48,7 @@ function Index() {
     const deleteAppointment = (id)=>{
         axios({
             method: 'POST',
-            url: `http://localhost:8080/remove-appt/${id}`
+            url: `${process.env.REACT_APP_SERVER_URL}/remove-appt/${id}`
         })
         .then(res=>{
             if(res.data.msg) {
@@ -63,8 +64,9 @@ function Index() {
 
     
     return (
-        <>
-            <h1>See my appointments</h1>
+        <div>
+            <TitleBar />
+            <h3 style={{marginTop: '50px'}}>See my appointments</h3>
             <MainDiv>
                 <form id="form-show" onSubmit={show}>
                     <Input type="email" label="Email" name="email" inputMode="email" onChange={(e)=> setEmail(e.target.value)} />
@@ -81,7 +83,7 @@ function Index() {
                 )
             }
             </div>
-        </>
+        </div>
     )
 }
 

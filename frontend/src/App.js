@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 
-import Header from './container/Header';
 import HomePage from './container/HomePage';
 import DetailForm from './container/DetailForm';
 import ShowSchedule from './container/ShowSchedule';
@@ -12,7 +11,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-          <Header />
           <Switch>
             <Route path="/" exact component={HomePage} />
             <Route path="/add" component={DetailForm} />

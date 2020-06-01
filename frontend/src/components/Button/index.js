@@ -10,7 +10,6 @@ const Button = styled.button`
     font-size:1rem;
     color:#FFF;
     letter-spacing:1px;
-    outline: none;
     cursor:pointer;
     box-shadow: 1px 2px 3px 1px grey;
     // border-bottom: 3px solid rgba(189, 168, 245, 0.651);
@@ -24,7 +23,7 @@ const Button = styled.button`
 
 export default function Index(props) {
     return (
-        <Button style={{borderRadius: props.borderRadius}}>
+        <Button style={{borderRadius: props.borderRadius, outline: '0px'}}>
             {props.children}
         </Button>
     )

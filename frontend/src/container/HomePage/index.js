@@ -1,12 +1,14 @@
 import React from 'react';
 
+import Header from '../Header';
 import Services from '../Services';
 
 function Index() {
     return (
-        <div>
+        <>
+            <Header />
             <Services />
-        </div>
+        </>
     )
 }
 

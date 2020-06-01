@@ -12,7 +12,7 @@ function Index(props) {
                 <span><Link to={props.link}>{props.button}</Link></span>
             </div>
             <div className="content-img">
-                <img src={props.img} />
+                <img src={props.img} alt='img' />
             </div>
         </div>
     )

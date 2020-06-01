@@ -4,7 +4,7 @@ import './Input.css';
 function Index(props) {
     return (
         <div className="input-div">
-            <input type={props.type} name={props.name} inputMode={props.inputMode} onChange={props.onChange} autoComplete="off" required  />
+            <input type={props.type} name={props.name} inputMode={props.inputMode} onChange={props.onChange} min={props.min} autoComplete="off" required  />
             
             <label htmlFor="name-input" className="label-input">
                     <span className="label-text">{props.label}</span>
