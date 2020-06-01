@@ -95,7 +95,7 @@ routes.post("/remove-appt/:id", (req,res)=>{
                 if(err) res.status(404).json({err:"Error while count-=1"});
                 else if(!schedule) res.json({err: "Could not remove appointment now"});
                 else {
-                    res.json({err: "Appointment cancelled successfully"});
+                    res.json({msg: "Appointment cancelled successfully"});
                 }
             })
         }

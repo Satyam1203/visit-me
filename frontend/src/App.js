@@ -4,6 +4,7 @@ import './App.css';
 
 import DetailForm from './container/DetailForm';
 import ShowSchedule from './container/ShowSchedule';
+import MySchedule from './container/MySchedule';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <header className="App-header">
         <DetailForm/>
         <ShowSchedule />
+        <MySchedule />
       </header>
     </div>
   );
