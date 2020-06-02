@@ -42,7 +42,7 @@ function Index() {
     }
 
     return (
-        <div className="add-form">
+        <div className="add-form" style={{height: '93vh'}}>
             <TitleBar />
             <h3>Add a Visiting Schedule</h3>
             {/* {console.log(name, purpose, date, time, phone, email)} */}

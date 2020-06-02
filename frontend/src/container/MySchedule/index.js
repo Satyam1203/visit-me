@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import './style.css';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -64,7 +65,7 @@ function Index() {
 
     
     return (
-        <div>
+        <div style={{height: '93vh'}}>
             <TitleBar />
             <h3 style={{marginTop: '50px'}}>See my appointments</h3>
             <MainDiv>
@@ -74,14 +75,35 @@ function Index() {
                 </form>
             </MainDiv>
             <div>
-            {
-                detail.map((dt, i)=> (
-                        <div key={i}>
-                            {dt.aDate}  |  {dt.aTime}  |  {dt.bookingDate}  |  <button onClick={()=> deleteAppointment(dt._id)}>Remove</button>
-                        </div>
-                    )
-                )
-            }
+                {detail.length ? (
+                    
+                <div class="table">
+                    <table cellSpacing={0} cellPadding={10}>
+                        <thead>
+                            <tr>
+                                <th>Visiting Date</th>
+                                <th>Visiting Time</th>
+                                <th>Booking Date</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            
+                            detail.map((dt, i)=> (      
+                                <tr key={i}>
+                                    <td>{dt.aDate}</td>
+                                    <td>{dt.aTime}</td>
+                                    <td>{dt.bookingDate.slice(0,10)}</td>
+                                    <td><button onClick={()=> deleteAppointment(dt._id)}><span role="img" aria-label="remove">❌</span></button></td>
+                                </tr>
+                                )
+                            )
+                        }
+                        </tbody>
+                    </table>
+                </div>
+                ): null}
             </div>
         </div>
     )

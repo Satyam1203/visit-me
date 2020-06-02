@@ -47,7 +47,7 @@ function Index() {
 
 
     return (
-        <div>
+        <div style={{height: '93vh'}}>
             <TitleBar />
             <h3 style={{marginTop: '50px'}}>See available list of slots</h3>
             <MainDiv>
@@ -61,7 +61,7 @@ function Index() {
             <div>
             {
                 schedule.map((s,i)=> (
-                        <div key={i}>
+                        <div key={i} style={{padding: '8px'}}>
                             {s[0]} - {s[1]}
                         </div>
                     )

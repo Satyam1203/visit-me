@@ -6,6 +6,7 @@ import HomePage from './container/HomePage';
 import DetailForm from './container/DetailForm';
 import ShowSchedule from './container/ShowSchedule';
 import MySchedule from './container/MySchedule';
+import Footer from './container/Footer';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/show" component={MySchedule} />
             <Route path="/available" component={ShowSchedule} />
           </Switch>
+          <Footer />
       </div>
     </Router>
   );
