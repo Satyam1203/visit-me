@@ -34,10 +34,15 @@
 }
 @media screen and (max-width: 768px){
     .content-desc{
-        flex-direction: column;
+        padding: 50px 0;
+        flex-direction: column !important;
+    }
+    .content-desc p {
+        padding: 1rem 0;
     }
     .content-desc div{
         width: 75%;
+        margin-bottom: 1rem;
     }
     .content-desc .content-img{
         width: 320px;

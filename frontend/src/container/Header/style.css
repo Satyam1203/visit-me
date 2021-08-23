@@ -11,7 +11,10 @@
 }
 .header .title{
     text-align: left;
-    padding-left:50px;
+    padding: 0 50px;
+}
+.header p {
+    max-width: 400px;
 }
 .header .arrow-down{
     position: absolute;
@@ -23,9 +26,18 @@
     font-size:2rem;
     font-weight: bold;
     color: darkslateblue;
-    background-image: linear-gradient(180deg, rgb(73, 73, 73), transparent);
-    transform: rotate(180deg);
+    background-image: linear-gradient(0deg, rgb(73, 73, 73), transparent);
+    animation: up-down 1.5s ease infinite;
 }
-.header .arrow-down span{
+.header .arrow-down a, .header .title button a{
     cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+}
+@keyframes up-down {
+    0% {
+        padding-top: 0;
+    } 100% {
+        padding-top: 12px;
+    }
 }

@@ -17,7 +17,7 @@ const FooterDiv = styled.div`
 export default function Footer() {
     return (
         <FooterDiv>
-            © Appointment System
+            All rights reserved. © visit-me
         </FooterDiv>
     )
 }

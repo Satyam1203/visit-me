@@ -5,7 +5,7 @@ import ContentBox from '../../components/ContentBox';
 
 function Index() {
     return (
-        <div className="services">
+        <div className="services" id="services-section">
             <h1>Services</h1>
             <ContentBox 
                 title='Add a visiting schedule'
