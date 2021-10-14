@@ -1,23 +1,23 @@
 const bcrypt = require("bcrypt");
-const User = require("../models/user");
+const Store = require("../models/store");
 
 module.exports = {
   create: async (req, res) => {
     try {
       const password = await bcrypt.hash(req.body.password, 10);
-      const user = await User.create({
+      const store = await Store.create({
         ...req.body,
         password,
       });
-      res.json(user);
+      res.json(store);
     } catch (e) {
       res.json({ error: e.message });
     }
   },
   get: async (req, res) => {
     try {
-      const user = await User.find({ email: req.body.email });
-      res.json(user);
+      const store = await Store.find({ email: req.body.email });
+      res.json(store);
     } catch (e) {
       res.json({ error: e.message });
     }

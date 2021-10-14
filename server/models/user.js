@@ -26,6 +26,6 @@ let userSchema = new mongoose.Schema({
   },
 });
 
-let User = mongoose.model("Detail", userSchema);
+let User = mongoose.model("User", userSchema);
 
 module.exports = User;
