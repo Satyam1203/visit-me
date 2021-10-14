@@ -1,9 +1,8 @@
 const { generateRefreshToken, generateAccessToken } = require("../helpers/jwt");
 const jwt = require("jsonwebtoken");
-const Model = require("../models/profile");
 const mongoose = require("mongoose");
 
-const refreshRT = (req, res, next) => {
+const refreshRT = (req, res, next, Model) => {
   if (req.cookies.refreshToken) {
     jwt.verify(
       req.cookies.refreshToken,
