@@ -38,6 +38,6 @@ let storeSchema = new mongoose.Schema({
   },
 });
 
-let Store = mongoose.model("Detail", storeSchema);
+let Store = mongoose.model("Store", storeSchema);
 
 module.exports = Store;
