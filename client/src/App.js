@@ -8,7 +8,9 @@ import DetailForm from "./container/DetailForm";
 import ShowSchedule from "./container/ShowSchedule";
 import MySchedule from "./container/MySchedule";
 import Login from "./container/Login";
-import Register from "./container/Register";
+import RegisterUser from "./container/Register/User";
+import RegisterStore from "./container/Register/Store";
+import NotFound from "./components/NotFound";
 import Footer from "./container/Footer";
 
 function App() {
@@ -24,9 +26,11 @@ function App() {
           <Route path="/show" component={MySchedule} />
           <Route path="/available" component={ShowSchedule} />
           <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
+          <Route path="/register/user" component={RegisterUser} />
+          <Route path="/register/store" component={RegisterStore} />
+          <Route path="*" component={NotFound} />
         </Switch>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </Router>
   );
