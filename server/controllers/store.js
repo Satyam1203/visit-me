@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const Store = require("../models/store");
+const authController = require("./auth");
 
 module.exports = {
   create: async (req, res) => {
@@ -22,4 +23,5 @@ module.exports = {
       res.json({ error: e.message });
     }
   },
+  login: (req, res) => authController.login(req, res, Store),
 };
