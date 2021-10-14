@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const { generateAccessToken, generateRefreshToken } = require("../helpers/jwt");
 
+const User = require("../models/user");
+
 const cookieOptions = {
   httpOnly: true,
   expires: 0,
@@ -78,6 +80,8 @@ module.exports = {
               } else {
                 console.log("Set Cookie for new Refresh Token");
                 res.cookie("refreshToken", refreshToken, cookieOptions);
+                if (Model === User) res.cookie("user", true, cookieOptions);
+                else res.cookie("store", true, cookieOptions);
                 res.json({
                   authenticated: true,
                   msg: "Login success",

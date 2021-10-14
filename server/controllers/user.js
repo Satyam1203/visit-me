@@ -1,16 +1,27 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const Store = require("../models/store");
 const authController = require("./auth");
 
 module.exports = {
   create: async (req, res) => {
     try {
-      const password = await bcrypt.hash(req.body.password, 10);
-      const user = await User.create({
-        ...req.body,
-        password,
-      });
-      res.json(user);
+      const userExists = await User.findOne({ email: req.body.email });
+      const storeExists = await Store.findOne({ email: req.body.email });
+
+      if (userExists || storeExists) {
+        res.json({
+          registered: false,
+          msg: "This email is already registered with us. Try another",
+        });
+      } else {
+        const password = await bcrypt.hash(req.body.password, 10);
+        const user = await User.create({
+          ...req.body,
+          password,
+        });
+        res.json(user);
+      }
     } catch (e) {
       res.json({ error: e.message });
     }

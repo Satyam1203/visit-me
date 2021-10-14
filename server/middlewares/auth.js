@@ -1,11 +1,15 @@
 const passport = require("passport");
 const refreshRT = require("./refreshTokenRegeneration");
 
-const authenticate = (req, res, next, Model) => {
+const User = require("../models/user");
+const Store = require("../models/store");
+
+const authenticate = (req, res, next) => {
   passport.authenticate("jwt", (err, user, info) => {
     if (err) res.json({ authenticated: false, msg: "Failed authenticating" });
     if (!user) {
-      refreshRT(req, res, next, Model);
+      if (req.cookies.store) refreshRT(req, res, next, Store);
+      else if (req.cookies.user) refreshRT(req, res, next, User);
     } else {
       req.user = user;
       next();
