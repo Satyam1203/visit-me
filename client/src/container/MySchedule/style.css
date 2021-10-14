@@ -1,0 +1,46 @@
+.table{
+    display: flex;
+    justify-content: center;
+}
+.table table{
+    margin-top:50px;
+}
+.table th{
+    border-top: none;
+}
+.table thead th{
+    /* border-bottom: 2px solid peachpuff; */
+    width: 150px;
+    /* padding-left:10px; */
+    
+}
+.table tr{
+    border-color: transparent   ;
+}
+.table td{
+    border-right: 2px solid peachpuff;
+    text-align: center;
+}
+.table tbody tr:nth-child(1) td{
+    border-top: 3px solid salmon;
+}
+.table thead th:nth-child(4){
+    width:50px;
+}
+.table button {
+    width:40px;
+    height: 40px;
+    border-radius: 50%;
+    outline: none;
+    padding:6px;
+    margin-top: -1rem;
+    cursor: pointer;
+    border: none;
+    background: none;
+    /* border: 1px solid salmon; */
+}
+@media screen and (max-width: 767px){
+    .table{
+        font-size: 12px;
+    }
+}

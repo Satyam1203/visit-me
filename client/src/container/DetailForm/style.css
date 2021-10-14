@@ -1,0 +1,15 @@
+
+.add-form h3{
+    margin-top:50px;
+}
+.form-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 1rem;
+    /* color: rgba(169, 158, 245, 0.651); */
+}
+h1{
+    color: #282C34;
+}
