@@ -1,0 +1,46 @@
+.header {
+  width: 100%;
+  height: 100vh;
+  background: url(https://images.pexels.com/photos/399161/pexels-photo-399161.jpeg?auto=compress)
+    no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+}
+.header .title {
+  text-align: left;
+  padding: 0 50px;
+}
+.header p {
+  max-width: 400px;
+}
+.header .arrow-down {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 10vh;
+  line-height: 10vh;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: darkslateblue;
+  background-image: linear-gradient(0deg, rgb(73, 73, 73), transparent);
+  animation: up-down 1.5s ease infinite;
+}
+.header .arrow-down a,
+.header .title button a {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+@keyframes up-down {
+  0% {
+    padding-top: 0;
+  }
+  100% {
+    padding-top: 12px;
+  }
+}
