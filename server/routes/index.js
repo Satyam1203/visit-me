@@ -14,7 +14,9 @@ router.route("/store").post(storeController.create);
 router.route("/store/find").post(storeController.get);
 router.route("/store/login").post(storeController.login);
 
-router.route("/authenticate", authenticate);
+router.use("/authenticate", authenticate, (req, res) => {
+  res.json(req.user);
+});
 router.route("/logout").post(authController.logout);
 
 module.exports = router;

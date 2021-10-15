@@ -3,8 +3,10 @@ import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 import "./style.css";
+import { useAuth } from "../../App";
 
-function Login({ auth, setauth }) {
+function Login() {
+  const { auth, setauth } = useAuth();
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [type, setType] = useState("user");

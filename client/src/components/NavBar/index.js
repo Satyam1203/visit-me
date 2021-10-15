@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+import { useAuth } from "../../App";
+
 const Title = styled.div`
   display: flex;
   justify-content: space-between;
@@ -23,7 +25,9 @@ const Title = styled.div`
   }
 `;
 
-function Index({ auth = false }) {
+function Index() {
+  const { auth } = useAuth();
+
   return (
     <Title>
       <h2>
@@ -33,7 +37,11 @@ function Index({ auth = false }) {
         {auth ? (
           <Link to="/logout">Logout</Link>
         ) : (
-          <Link to="/login">Log In</Link>
+          <>
+            <Link to="/register/store">Store Registration</Link>
+            <Link to="/register/user">User Registeration</Link>
+            <Link to="/login">Log In</Link>
+          </>
         )}
         <Link to="/">Home</Link>
       </div>

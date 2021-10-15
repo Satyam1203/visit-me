@@ -3,6 +3,7 @@ import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 import "../Login/style.css";
+import { useAuth } from "../../App";
 
 const weekDays = [
   "Monday",
@@ -14,7 +15,8 @@ const weekDays = [
   "Sunday",
 ];
 
-function Register({ auth }) {
+function Store() {
+  const { auth } = useAuth();
   const [formData, setFormData] = useState({});
   const [status, setStatus] = useState("");
 
@@ -44,7 +46,7 @@ function Register({ auth }) {
   if (auth) return <Redirect to="/" />;
   return (
     <>
-      <div className="form-wrapper" style={{ justifyContent: "flex-start" }}>
+      <div className="form-wrapper">
         <h2>Register your store</h2>
         <form id="regForm" onSubmit={handleFormSubmit}>
           <div className="input-wrapper">
@@ -136,4 +138,4 @@ function Register({ auth }) {
   );
 }
 
-export default Register;
+export default Store;

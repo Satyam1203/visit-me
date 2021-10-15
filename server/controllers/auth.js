@@ -100,7 +100,9 @@ module.exports = {
     }
   },
   logout: function (req, res) {
-    res.cookie("refreshToken", "", cookieOptions);
+    res.clearCookie("refreshToken");
+    if (req?.cookies?.user) res.clearCookie("user");
+    if (req?.cookies?.store) res.clearCookie("store");
     res.json({ authenticated: false });
   },
 };
