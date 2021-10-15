@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -28,6 +29,14 @@ const Title = styled.div`
 function Index() {
   const { auth } = useAuth();
 
+  const logout = () => {
+    axios("/api/logout", { method: "POST" })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch(console.error);
+  };
+
   return (
     <Title>
       <h2>
@@ -35,7 +44,7 @@ function Index() {
       </h2>
       <div className="nav-links">
         {auth ? (
-          <Link to="/logout">Logout</Link>
+          <a onClick={logout}>Logout</a>
         ) : (
           <>
             <Link to="/register/store">Store Registration</Link>

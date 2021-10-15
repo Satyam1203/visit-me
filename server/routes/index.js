@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const userController = require("../controllers/user");
 const storeController = require("../controllers/store");
+const scheduleController = require("../controllers/schedule");
 const authController = require("../controllers/auth");
 
 const authenticate = require("../middlewares/auth");
@@ -12,7 +13,11 @@ router.route("/user/login").post(userController.login);
 
 router.route("/store").post(storeController.create);
 router.route("/store/find").post(storeController.get);
+router.route("/store/find/").get(storeController.getAll);
 router.route("/store/login").post(storeController.login);
+
+router.route("/schedule").post(scheduleController.create);
+router.route("/schedule/find").post(scheduleController.getById);
 
 router.use("/authenticate", authenticate, (req, res) => {
   res.json(req.user);

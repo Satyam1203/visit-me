@@ -86,6 +86,7 @@ module.exports = {
                   authenticated: true,
                   msg: "Login success",
                   accessToken,
+                  isUser: Model === User,
                 });
               }
             }

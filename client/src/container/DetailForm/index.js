@@ -1,33 +1,39 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./style.css";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import NavBar from "../../components/NavBar";
 
 function Index() {
-  const [name, setName] = useState("");
+  const [stores, setStores] = useState([]);
+
+  const [storeId, setStoreId] = useState("");
   const [purpose, setPurpose] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
 
   const error = useRef();
 
+  useEffect(() => {
+    axios("/api/store/find", { method: "GET" })
+      .then((res) => {
+        console.log(res.data);
+        setStores(res.data.stores);
+      })
+      .catch(console.error);
+  }, []);
+
   const addAppointment = (e) => {
     e.preventDefault();
-    axios({
+
+    axios("/api/schedule", {
       method: "POST",
-      url: `${process.env.REACT_APP_SERVER_URL}/add-appt`,
       data: {
-        name,
         purpose,
         date,
         time,
-        phone,
-        email,
+        storeId,
       },
     })
       .then((res) => {
@@ -47,17 +53,26 @@ function Index() {
 
   return (
     <div className="add-form" style={{ height: "95vh" }}>
-      <NavBar />
       <h3>Add a Visiting Schedule</h3>
-      {/* {console.log(name, purpose, date, time, phone, email)} */}
       <div className="form-div">
         <form id="form-add" onSubmit={addAppointment}>
-          <Input
-            type="text"
-            label="Name"
-            name="name"
-            onChange={(e) => setName(e.target.value)}
-          />
+          <select
+            name="store"
+            className="input-div"
+            onChange={(e) => setStoreId(e.target.value)}
+            required
+          >
+            {stores.length > 0 && [
+              <option value="" key="0">
+                Select Store
+              </option>,
+              stores.map((store) => (
+                <option value={store._id} key={store._id}>
+                  {store.name}
+                </option>
+              )),
+            ]}
+          </select>
           <Input
             type="text"
             label="Visiting Purpose"
@@ -75,9 +90,9 @@ function Index() {
                 ? `0${Number(new Date().getMonth()) + 1}`
                 : Number(new Date().getMonth()) + 1
             }-${
-              Number(new Date().getDate()) < 10
-                ? `0${new Date().getDate()}`
-                : new Date().getDate()
+              Number(new Date().getDate() + 1) < 10
+                ? `0${new Date().getDate() + 1}`
+                : new Date().getDate() + 1
             }`}
           />
           <Input
@@ -85,21 +100,8 @@ function Index() {
             upLabel="Time"
             name="time"
             inputMode="text"
+            step="1800"
             onChange={(e) => setTime(e.target.value)}
-          />
-          <Input
-            type="text"
-            label="Phone"
-            name="Phone"
-            inputMode="numeric"
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          <Input
-            type="email"
-            label="Email"
-            name="Email"
-            inputMode="email"
-            onChange={(e) => setEmail(e.target.value)}
           />
           <Button type="submit">Submit</Button>
         </form>

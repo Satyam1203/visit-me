@@ -29,6 +29,7 @@ function Login() {
         setLoginStatus(res.data.msg);
         if (res.data.authenticated && res.data.accessToken !== undefined) {
           localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("isUser", res.data.isUser);
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${res.data.accessToken}`;
