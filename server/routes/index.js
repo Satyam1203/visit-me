@@ -17,7 +17,8 @@ router.route("/store/find/").get(storeController.getAll);
 router.route("/store/login").post(storeController.login);
 
 router.route("/schedule").post(scheduleController.create);
-router.route("/schedule/find/:filter").post(scheduleController.get);
+router.route("/schedule/find/user").post(scheduleController.getByUser);
+router.route("/schedule/find/date").post(scheduleController.getByDate);
 
 router.use("/authenticate", authenticate, (req, res) => {
   res.json(req.user);

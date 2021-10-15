@@ -26,7 +26,7 @@ let userSchema = new mongoose.Schema({
   },
   created_at: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 
