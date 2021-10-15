@@ -8,7 +8,7 @@ function Index({ upLabel, ...props }) {
 
       <label htmlFor="name-input" className="label-input">
         <span className="label-text">{props.label}</span>
-        <span className="up-label-text">{props.upLabel}</span>
+        <span className="up-label-text">{upLabel}</span>
       </label>
     </div>
   );

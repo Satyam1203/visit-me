@@ -4,6 +4,7 @@ import "./style.css";
 
 import Button from "../../components/Button";
 import Input from "../../components/Input";
+import { weekDays } from "../Register/Store";
 
 function Index() {
   const [stores, setStores] = useState([]);
@@ -26,6 +27,15 @@ function Index() {
 
   const addAppointment = (e) => {
     e.preventDefault();
+    const selectedStore = stores.filter((store) => store._id === storeId);
+    const workingDays = selectedStore[0].working_days;
+    const day = new Date(date).getDay();
+
+    if (!workingDays.includes(day)) {
+      error.current.innerText = `This shop does not open on ${weekDays[day]}`;
+      return;
+    }
+    error.current.innerText = "";
 
     axios("/api/schedule", {
       method: "POST",
@@ -39,11 +49,11 @@ function Index() {
       .then((res) => {
         if (res.data.err) {
           console.log(res.data.err);
-          error.current.innerHTML = res.data.err;
+          error.current.innerText = res.data.err;
         } else {
           console.log(res.data);
           document.querySelector("#form-add").reset();
-          error.current.innerHTML = "";
+          error.current.innerText = "Slot Booked";
         }
       })
       .catch((e) => {
@@ -100,6 +110,8 @@ function Index() {
             upLabel="Time"
             name="time"
             inputMode="text"
+            min={stores?.find((s) => s._id === storeId)?.opens_at}
+            max={stores?.find((s) => s._id === storeId)?.closes_at}
             step="1800"
             onChange={(e) => setTime(e.target.value)}
           />
