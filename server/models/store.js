@@ -36,6 +36,10 @@ let storeSchema = new mongoose.Schema({
     type: [String],
     select: false,
   },
+  created_at: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 let Store = mongoose.model("Store", storeSchema);

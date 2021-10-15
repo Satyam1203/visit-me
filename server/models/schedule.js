@@ -21,6 +21,10 @@ let scheduleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  created_at: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 let Schedule = mongoose.model("Schedule", scheduleSchema);
