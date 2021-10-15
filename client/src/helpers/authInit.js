@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default function authInit(setauth) {
+export default function authInit(setauth, setIsUser) {
   axios("/api/authenticate", {
     method: "POST",
     "Content-Type": "application/json",
@@ -11,6 +11,7 @@ export default function authInit(setauth) {
 
       if (res.data.authenticated && res.data.accessToken !== undefined) {
         setauth(true);
+        setIsUser(localStorage.getItem("isUser"));
         localStorage.setItem("accessToken", res.data.accessToken);
         axios.defaults.headers.common[
           "Authorization"

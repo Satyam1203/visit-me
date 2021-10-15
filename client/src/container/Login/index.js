@@ -6,7 +6,7 @@ import "./style.css";
 import { useAuth } from "../../App";
 
 function Login() {
-  const { auth, setauth } = useAuth();
+  const { auth, setauth, setIsUser } = useAuth();
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [type, setType] = useState("user");
@@ -30,6 +30,7 @@ function Login() {
         if (res.data.authenticated && res.data.accessToken !== undefined) {
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("isUser", res.data.isUser);
+          setIsUser(res.data.isUser);
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${res.data.accessToken}`;
