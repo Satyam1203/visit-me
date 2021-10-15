@@ -24,6 +24,10 @@ let userSchema = new mongoose.Schema({
     type: [String],
     select: false,
   },
+  created_at: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 let User = mongoose.model("User", userSchema);

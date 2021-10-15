@@ -24,16 +24,31 @@ module.exports = {
       res.json({ error: e.message });
     }
   },
-  getById: async (req, res) => {
+  get: async (req, res) => {
     try {
-      const schedule = await Schedule.findById(req.body.id);
+      let schedule;
+      if (req.params.filter === "id") {
+        schedule = await Schedule.findById(req.body.id);
+      } else {
+        const { user } = jwt_decode(req.cookies.refreshToken);
+
+        if (req.cookies.user) {
+          schedule = await Schedule.find({ userId: user.id });
+        }
+      }
+
       if (!schedule) {
         res.json({ found: false });
       } else {
-        const user = await User.findById(schedule.userId);
-        const store = await Store.findById(schedule.storeId);
+        schedule = await Promise.all(
+          schedule.map(async (appt) => {
+            const store = await Store.findById(appt.storeId);
 
-        res.json({ schedule, user, store });
+            return { ...appt._doc, store };
+          })
+        );
+
+        res.json({ schedule });
       }
     } catch (e) {
       res.json({ error: e.message });

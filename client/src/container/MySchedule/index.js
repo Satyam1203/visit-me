@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import "./style.css";
-
-import Input from "../../components/Input";
-import Button from "../../components/Button";
-import NavBar from "../../components/NavBar";
 
 const MainDiv = styled.div`
   display: flex;
@@ -16,34 +12,25 @@ const MainDiv = styled.div`
 `;
 
 function Index() {
-  const [email, setEmail] = useState("");
-  const [detail, setDetail] = useState([]);
+  const [schedule, setSchedule] = useState([]);
 
-  const show = (e) => {
-    if (e) e.preventDefault();
-    axios({
+  useEffect(() => {
+    axios("/api/schedule/find/user", {
       method: "POST",
-      url: `${process.env.REACT_APP_SERVER_URL}/show-appt`,
-      data: {
-        email,
-      },
     })
       .then((res) => {
         if (res.data.err) {
           console.log(res.data.err);
-          setDetail([]);
-          // error.current.innerHTML=res.data.err;
+          setSchedule([]);
         } else {
           console.log(res.data);
-          document.querySelector("#form-show").reset();
-          setDetail(res.data.detail);
-          // error.current.innerHTML='';
+          setSchedule(res.data.schedule);
         }
       })
       .catch((e) => {
         console.error(e);
       });
-  };
+  }, []);
 
   const deleteAppointment = (id) => {
     axios({
@@ -53,7 +40,6 @@ function Index() {
       .then((res) => {
         if (res.data.msg) {
           console.log(res.data.msg);
-          show();
         } else console.error(res.data.err);
       })
       .catch((e) => {
@@ -63,51 +49,34 @@ function Index() {
 
   return (
     <div style={{ height: "95vh" }}>
-      <NavBar />
-      <h3 style={{ marginTop: "50px" }}>See my appointments</h3>
-      <MainDiv>
-        <form id="form-show" onSubmit={show}>
-          <Input
-            type="email"
-            label="Email"
-            name="email"
-            inputMode="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-      </MainDiv>
+      <h3 style={{ marginTop: "50px" }}>My appointments</h3>
       <div>
-        {detail.length ? (
+        {schedule?.length > 0 && (
           <div className="table">
             <table cellSpacing={0} cellPadding={10}>
               <thead>
                 <tr>
+                  <th>Store Name</th>
                   <th>Visiting Date</th>
-                  <th>Visiting Time</th>
+                  <th>Time Slot</th>
                   <th>Booking Date</th>
-                  <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
-                {detail.map((dt, i) => (
+                {schedule.map((dt, i) => (
                   <tr key={i}>
-                    <td>{dt.aDate}</td>
-                    <td>{dt.aTime}</td>
-                    <td>{dt.bookingDate.slice(0, 10)}</td>
+                    <td>{dt.store.name}</td>
+                    <td>{dt.date.slice(0, 10)}</td>
                     <td>
-                      <button onClick={() => deleteAppointment(dt._id)}>
-                        <span role="img" aria-label="remove">
-                          ❌
-                        </span>
-                      </button>
+                      {dt.time} - {parseInt(dt.time) + 1}:00
                     </td>
+                    <td>{dt.created_at.slice(0, 10)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        ) : null}
+        )}
       </div>
     </div>
   );
