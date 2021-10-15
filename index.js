@@ -2,6 +2,7 @@
 const express = require("express"),
   app = express(),
   cors = require("cors"),
+  path = require("path"),
   cookieParser = require("cookie-parser");
 
 const passport = require("./middlewares/passport");
@@ -23,6 +24,16 @@ app.use(passport.initialize());
 
 // Routes
 app.use("/api", routes);
+
+if (
+  process.env.NODE_ENV === "production" ||
+  process.env.NODE_ENV === "staging"
+) {
+  app.use(express.static("client/build"));
+  app.get("*", (_, res) => {
+    res.sendFile(path.join(__dirname + "/client/build/index.html"));
+  });
+}
 
 // Activate the server
 app.listen(process.env.PORT, () => {

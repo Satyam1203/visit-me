@@ -1,13 +1,16 @@
 {
   "name": "visit-me-backend",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "devStart": "nodemon index.js",
-    "client": "npm start --prefix ../client",
+    "client": "npm start --prefix ./client",
     "dev": "concurrently \"npm run devStart\" \"npm run client\""
+  },
+  "engines": {
+    "node": "14.x"
   },
   "author": "Satyam",
   "license": "ISC",
