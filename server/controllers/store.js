@@ -34,5 +34,13 @@ module.exports = {
       res.json({ error: e.message });
     }
   },
+  getAll: async (req, res) => {
+    try {
+      const stores = await Store.find();
+      res.json({ stores });
+    } catch (e) {
+      res.json({ error: e.message });
+    }
+  },
   login: (req, res) => authController.login(req, res, Store),
 };
