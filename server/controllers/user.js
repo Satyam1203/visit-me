@@ -20,7 +20,7 @@ module.exports = {
           ...req.body,
           password,
         });
-        res.json(user);
+        res.json({ registered: true });
       }
     } catch (e) {
       res.json({ error: e.message });

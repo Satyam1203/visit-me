@@ -1,7 +1,10 @@
 // Dependencies
-let express = require("express"),
+const express = require("express"),
   app = express(),
-  cors = require("cors");
+  cors = require("cors"),
+  cookieParser = require("cookie-parser");
+
+const passport = require("./middlewares/passport");
 
 // Import routes
 let routes = require("./routes");
@@ -13,11 +16,13 @@ require("dotenv").config();
 require("./models/connect")();
 
 // Middleware function
-app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
+app.use(express.json());
+app.use(passport.initialize());
 
 // Routes
-app.use(routes);
+app.use("/api", routes);
 
 // Activate the server
 app.listen(process.env.PORT, () => {

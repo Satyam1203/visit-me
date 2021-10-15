@@ -3,29 +3,16 @@ import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 import "../Login/style.css";
+import { useAuth } from "../../App";
 
-const weekDays = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
-
-function Register({ auth }) {
+function User() {
+  const { auth } = useAuth();
   const [formData, setFormData] = useState({});
   const [status, setStatus] = useState("");
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setStatus("");
-
-    const workingDaysInputs = Array.from(
-      document.getElementsByName("working_days")
-    );
-    const working_days = workingDaysInputs.map((el) => el.value);
 
     axios(`/api/user`, {
       method: "POST",
@@ -42,7 +29,7 @@ function Register({ auth }) {
   if (auth) return <Redirect to="/" />;
   return (
     <>
-      <div className="form-wrapper" style={{ justifyContent: "flex-start" }}>
+      <div className="form-wrapper">
         <h2>Register yourself</h2>
         <form onSubmit={handleFormSubmit}>
           <div className="input-wrapper">
@@ -99,4 +86,4 @@ function Register({ auth }) {
   );
 }
 
-export default Register;
+export default User;
