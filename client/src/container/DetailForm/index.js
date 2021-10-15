@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import "./style.css";
 
@@ -6,7 +7,10 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { weekDays } from "../Register/Store";
 
+import { useAuth } from "../../App";
+
 function Index() {
+  const { isUser } = useAuth();
   const [stores, setStores] = useState([]);
 
   const [storeId, setStoreId] = useState("");
@@ -17,12 +21,18 @@ function Index() {
   const error = useRef();
 
   useEffect(() => {
-    axios("/api/store/find", { method: "GET" })
+    const source = axios.CancelToken.source();
+
+    axios("/api/store/find", { method: "GET", cancelToken: source.token })
       .then((res) => {
         console.log(res.data);
         setStores(res.data.stores);
       })
       .catch(console.error);
+
+    return () => {
+      source.cancel("due to unmounting");
+    };
   }, []);
 
   const addAppointment = (e) => {
@@ -60,6 +70,8 @@ function Index() {
         console.error(e);
       });
   };
+
+  if (!isUser) return <Redirect to="/" />;
 
   return (
     <div className="add-form" style={{ height: "95vh" }}>

@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import "./style.css";
 
+import { useAuth } from "../../App";
+
 function Index() {
+  const { isUser } = useAuth();
   const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
+
     axios("/api/schedule/find/user", {
       method: "POST",
+      cancelToken: source.token,
     })
       .then((res) => {
         if (res.data.err) {
@@ -22,6 +28,9 @@ function Index() {
       .catch((e) => {
         console.error(e);
       });
+    return () => {
+      source.cancel("due to unmounting");
+    };
   }, []);
 
   const deleteAppointment = (id) => {
@@ -38,6 +47,8 @@ function Index() {
         console.error(e);
       });
   };
+
+  if (!isUser) return <Redirect to="/" />;
 
   return (
     <div style={{ height: "95vh" }}>

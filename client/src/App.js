@@ -26,13 +26,14 @@ export function useAuth() {
 }
 
 function App() {
+  const [isUser, setIsUser] = useState(null);
   const [auth, setauth] = useState(false);
 
-  useEffect(() => authInit(setauth), []);
+  useEffect(() => authInit(setauth, setIsUser), []);
 
   return (
     <div className="App">
-      <Auth.Provider value={{ auth, setauth }}>
+      <Auth.Provider value={{ auth, setauth, isUser, setIsUser }}>
         <Router>
           <NavBar auth={auth} />
           <Switch>
