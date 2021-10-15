@@ -112,7 +112,7 @@ function Index() {
             inputMode="text"
             min={stores?.find((s) => s._id === storeId)?.opens_at}
             max={stores?.find((s) => s._id === storeId)?.closes_at}
-            step="1800"
+            step="3600"
             onChange={(e) => setTime(e.target.value)}
           />
           <Button type="submit">Submit</Button>

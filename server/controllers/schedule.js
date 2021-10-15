@@ -24,17 +24,15 @@ module.exports = {
       res.json({ error: e.message });
     }
   },
-  get: async (req, res) => {
+  getByUser: async (req, res) => {
     try {
       let schedule;
-      if (req.params.filter === "id") {
-        schedule = await Schedule.findById(req.body.id);
-      } else {
-        const { user } = jwt_decode(req.cookies.refreshToken);
+      const { user } = jwt_decode(req.cookies.refreshToken);
 
-        if (req.cookies.user) {
-          schedule = await Schedule.find({ userId: user.id });
-        }
+      if (req.cookies.user) {
+        schedule = await Schedule.find({ userId: user.id });
+      } else {
+        throw new Error("Please Log-In");
       }
 
       if (!schedule) {
@@ -53,5 +51,28 @@ module.exports = {
     } catch (e) {
       res.json({ error: e.message });
     }
+  },
+  getByDate: async (req, res) => {
+    let availableTimings = [];
+    const store = await Store.findById(req.body.storeId);
+    const schedule = await Schedule.find({ ...req.body });
+
+    const openTimeHour = parseInt(store.opens_at);
+    const closeTimeHour = parseInt(store.closes_at);
+    const maxAllowed = 8;
+
+    for (let i = openTimeHour; i < closeTimeHour; i++) {
+      availableTimings = [
+        ...availableTimings,
+        { slot: `${i}:00 - ${i + 1}:00`, count: maxAllowed },
+      ];
+    }
+
+    schedule.forEach((s) => {
+      const idx = parseInt(s.time) - openTimeHour;
+      availableTimings[idx].count -= 1;
+    });
+
+    res.json({ timings: availableTimings });
   },
 };

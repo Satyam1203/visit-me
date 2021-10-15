@@ -3,14 +3,6 @@ import styled from "styled-components";
 import axios from "axios";
 import "./style.css";
 
-const MainDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  justify-content: center;
-  padding: 20px;
-`;
-
 function Index() {
   const [schedule, setSchedule] = useState([]);
 
@@ -66,11 +58,11 @@ function Index() {
                 {schedule.map((dt, i) => (
                   <tr key={i}>
                     <td>{dt.store.name}</td>
-                    <td>{dt.date.slice(0, 10)}</td>
+                    <td>{new Date(dt.date).toLocaleDateString()}</td>
                     <td>
-                      {dt.time} - {parseInt(dt.time) + 1}:00
+                      {parseInt(dt.time)}:00 - {parseInt(dt.time) + 1}:00
                     </td>
-                    <td>{dt.created_at.slice(0, 10)}</td>
+                    <td>{new Date(dt.created_at).toLocaleDateString()}</td>
                   </tr>
                 ))}
               </tbody>

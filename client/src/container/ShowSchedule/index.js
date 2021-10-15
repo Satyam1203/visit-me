@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import NavBar from "../../components/NavBar";
+import { weekDays } from "../Register/Store";
 
 const MainDiv = styled.div`
   display: flex;
@@ -14,28 +14,40 @@ const MainDiv = styled.div`
   padding: 20px;
 `;
 
-const ListSchedule = styled.div`
-  table {
-    margin: auto;
-
-    th,
-    td {
-      border: 1px solid black;
-      padding: 8px;
-    }
-  }
-`;
-
 function Index() {
-  const [date, setDate] = useState("");
+  const [stores, setStores] = useState([]);
   const [schedule, setSchedule] = useState([]);
 
-  const show = (e) => {
+  const [storeId, setStoreId] = useState("");
+  const [date, setDate] = useState("");
+
+  const error = useRef();
+
+  useEffect(() => {
+    axios("/api/store/find", { method: "GET" })
+      .then((res) => {
+        console.log(res.data);
+        setStores(res.data.stores);
+      })
+      .catch(console.error);
+  }, []);
+
+  const getSchedule = (e) => {
     e.preventDefault();
-    axios({
+    const selectedStore = stores.filter((store) => store._id === storeId);
+    const workingDays = selectedStore[0].working_days;
+    const day = new Date(date).getDay();
+
+    if (!workingDays.includes(day)) {
+      error.current.innerText = `This shop does not open on ${weekDays[day]}`;
+      return;
+    }
+
+    error.current.innerText = "";
+    axios("/api/schedule/find/date", {
       method: "POST",
-      url: `${process.env.REACT_APP_SERVER_URL}/schedule`,
       data: {
+        storeId,
         date,
       },
     })
@@ -58,10 +70,26 @@ function Index() {
 
   return (
     <div style={{ height: "95vh" }}>
-      <NavBar />
       <h3 style={{ marginTop: "50px" }}>See available list of slots</h3>
       <MainDiv>
-        <form id="form-schedule" onSubmit={show}>
+        <form id="form-schedule" onSubmit={getSchedule}>
+          <select
+            name="store"
+            className="input-div"
+            onChange={(e) => setStoreId(e.target.value)}
+            required
+          >
+            {stores.length > 0 && [
+              <option value="" key="0">
+                Select Store
+              </option>,
+              stores.map((store) => (
+                <option value={store._id} key={store._id}>
+                  {store.name}
+                </option>
+              )),
+            ]}
+          </select>
           <Input
             type="date"
             upLabel="Date"
@@ -73,16 +101,17 @@ function Index() {
                 ? `0${Number(new Date().getMonth()) + 1}`
                 : Number(new Date().getMonth()) + 1
             }-${
-              Number(new Date().getDate()) < 10
-                ? `0${new Date().getDate()}`
-                : new Date().getDate()
+              Number(new Date().getDate() + 1) < 10
+                ? `0${new Date().getDate() + 1}`
+                : new Date().getDate() + 1
             }`}
           />
           <Button type="submit">Submit</Button>
         </form>
+        <span ref={error} style={{ color: "red" }}></span>
       </MainDiv>
-      {schedule.length ? (
-        <ListSchedule>
+      {schedule.length > 0 && (
+        <div className="table">
           <table>
             <thead>
               <tr>
@@ -99,8 +128,8 @@ function Index() {
               ))}
             </tbody>
           </table>
-        </ListSchedule>
-      ) : null}
+        </div>
+      )}
     </div>
   );
 }
