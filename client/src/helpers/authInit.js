@@ -11,7 +11,8 @@ export default function authInit(setauth, setIsUser) {
 
       if (res.data.authenticated && res.data.accessToken !== undefined) {
         setauth(true);
-        setIsUser(localStorage.getItem("isUser"));
+        if (localStorage.getItem("isUser") === "true") setIsUser(true);
+        else if (localStorage.getItem("isUser") === "false") setIsUser(false);
         localStorage.setItem("accessToken", res.data.accessToken);
         axios.defaults.headers.common[
           "Authorization"

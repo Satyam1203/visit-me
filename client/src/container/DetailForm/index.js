@@ -72,7 +72,8 @@ function Index() {
       });
   };
 
-  if (!isUser) return <Redirect to="/" />;
+  if (isUser === null) return <Redirect to="/login" />;
+  else if (isUser === false) return <Redirect to="/" />;
 
   return (
     <>
