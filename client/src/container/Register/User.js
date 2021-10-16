@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 
 import "../Login/style.css";
 import { useAuth } from "../../App";
+import NavBar from "../../components/NavBar";
 
 function User() {
   const { auth } = useAuth();
@@ -29,6 +30,7 @@ function User() {
   if (auth) return <Redirect to="/" />;
   return (
     <>
+      <NavBar />
       <div className="form-wrapper">
         <h2>Register yourself</h2>
         <form onSubmit={handleFormSubmit}>

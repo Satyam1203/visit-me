@@ -2,7 +2,6 @@ import React, { useState, useEffect, createContext, useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 
-import NavBar from "./components/NavBar";
 import HomePage from "./container/HomePage";
 import DetailForm from "./container/DetailForm";
 import ShowSchedule from "./container/ShowSchedule";
@@ -35,7 +34,6 @@ function App() {
     <div className="App">
       <Auth.Provider value={{ auth, setauth, isUser, setIsUser }}>
         <Router>
-          <NavBar auth={auth} />
           <Switch>
             <Route path="/" exact component={HomePage} />
             <Route path="/add" component={DetailForm} />

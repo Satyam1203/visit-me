@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import "./style.css";
 
+import "./style.css";
 import { useAuth } from "../../App";
+import NavBar from "../../components/NavBar";
 
 function Index() {
   const { isUser } = useAuth();
@@ -51,37 +52,40 @@ function Index() {
   if (!isUser) return <Redirect to="/" />;
 
   return (
-    <div style={{ height: "95vh" }}>
-      <h3 style={{ marginTop: "50px" }}>My appointments</h3>
-      <div>
-        {schedule?.length > 0 && (
-          <div className="table">
-            <table cellSpacing={0} cellPadding={10}>
-              <thead>
-                <tr>
-                  <th>Store Name</th>
-                  <th>Visiting Date</th>
-                  <th>Time Slot</th>
-                  <th>Booking Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {schedule.map((dt, i) => (
-                  <tr key={i}>
-                    <td>{dt.store.name}</td>
-                    <td>{new Date(dt.date).toLocaleDateString()}</td>
-                    <td>
-                      {parseInt(dt.time)}:00 - {parseInt(dt.time) + 1}:00
-                    </td>
-                    <td>{new Date(dt.created_at).toLocaleDateString()}</td>
+    <>
+      <NavBar />
+      <div style={{ height: "95vh" }}>
+        <h3 style={{ marginTop: "50px" }}>My appointments</h3>
+        <div>
+          {schedule?.length > 0 && (
+            <div className="table">
+              <table cellSpacing={0} cellPadding={10}>
+                <thead>
+                  <tr>
+                    <th>Store Name</th>
+                    <th>Visiting Date</th>
+                    <th>Time Slot</th>
+                    <th>Booking Date</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {schedule.map((dt, i) => (
+                    <tr key={i}>
+                      <td>{dt.store.name}</td>
+                      <td>{new Date(dt.date).toLocaleDateString()}</td>
+                      <td>
+                        {parseInt(dt.time)}:00 - {parseInt(dt.time) + 1}:00
+                      </td>
+                      <td>{new Date(dt.created_at).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

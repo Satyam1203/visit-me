@@ -27,9 +27,10 @@ const Title = styled.div`
       background: white;
       position: absolute;
       margin-top: 10px;
+      margin-left: -120px;
       z-index: 1;
       border: 1px solid grey;
-      border-radius: 0 12px 12px 12px;
+      border-radius: 12px 0 12px 12px;
       width: max-content;
       padding: 12px;
       a {
@@ -74,7 +75,10 @@ function Index() {
     axios("/api/logout", { method: "POST" })
       .then((res) => {
         console.log(res.data);
-        setauth(res.authenticated);
+        if (res.data.authenticated === false) {
+          localStorage.removeItem("isUser");
+          setauth(res.authenticated);
+        }
       })
       .catch(console.error);
   };
