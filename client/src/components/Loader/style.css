@@ -1,0 +1,38 @@
+.loader-bubble {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-top: 200px;
+}
+.bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 2px;
+}
+.bubble-child {
+  box-sizing: border-box;
+  border-radius: 50%;
+  background-color: darkslateblue;
+  animation: in-out-all 350ms alternate infinite ease;
+}
+.bubble-second {
+  animation-delay: 100ms;
+}
+.bubble-third {
+  animation-delay: 200ms;
+}
+@keyframes in-out-all {
+  0% {
+    width: 20px;
+    height: 20px;
+  }
+  100% {
+    width: 10px;
+    height: 10px;
+  }
+}

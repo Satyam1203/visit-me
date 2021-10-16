@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
+import Loader from "../../components/Loader";
 import NavBar from "../../components/NavBar";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -18,6 +19,7 @@ const MainDiv = styled.div`
 function Index() {
   const [stores, setStores] = useState([]);
   const [schedule, setSchedule] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [storeId, setStoreId] = useState("");
   const [date, setDate] = useState("");
@@ -45,6 +47,7 @@ function Index() {
     }
 
     error.current.innerText = "";
+    setLoading(true);
     axios("/api/schedule/find/date", {
       method: "POST",
       data: {
@@ -61,6 +64,7 @@ function Index() {
           console.log(res.data);
           document.querySelector("#form-schedule").reset();
           setSchedule(res.data.timings);
+          setLoading(false);
           // error.current.innerHTML='';
         }
       })
@@ -113,25 +117,29 @@ function Index() {
           </form>
           <span ref={error} style={{ color: "red" }}></span>
         </MainDiv>
-        {schedule.length > 0 && (
-          <div className="table">
-            <table>
-              <thead>
-                <tr>
-                  <th>Time</th>
-                  <th>Available slots</th>
-                </tr>
-              </thead>
-              <tbody>
-                {schedule.map((s, i) => (
-                  <tr key={i}>
-                    <td>{s.slot}</td>
-                    <td>{s.count}</td>
+        {loading ? (
+          <Loader />
+        ) : (
+          schedule.length > 0 && (
+            <div className="table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Available slots</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {schedule.map((s, i) => (
+                    <tr key={i}>
+                      <td>{s.slot}</td>
+                      <td>{s.count}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
         )}
       </div>
     </>
