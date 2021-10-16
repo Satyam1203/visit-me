@@ -36,3 +36,32 @@
     height: 10px;
   }
 }
+
+.inline {
+  display: inline-flex;
+  margin: 0;
+}
+.inline .bubble {
+  width: 12px;
+  height: 12px;
+}
+.inline .bubble-child {
+  background-color: #fff;
+  animation: in-out-small 350ms alternate infinite ease;
+}
+.inline .bubble-second {
+  animation-delay: 100ms;
+}
+.inline .bubble-third {
+  animation-delay: 200ms;
+}
+@keyframes in-out-small {
+  0% {
+    width: 12px;
+    height: 12px;
+  }
+  100% {
+    width: 6px;
+    height: 6px;
+  }
+}

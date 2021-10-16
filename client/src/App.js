@@ -10,8 +10,6 @@ import Login from "./container/Login";
 import RegisterUser from "./container/Register/User";
 import RegisterStore from "./container/Register/Store";
 import NotFound from "./components/NotFound";
-import Footer from "./container/Footer";
-
 import authInit from "./helpers/authInit";
 
 const Auth = createContext();
@@ -44,7 +42,6 @@ function App() {
             <Route path="/register/store" component={RegisterStore} />
             <Route path="*" component={NotFound} />
           </Switch>
-          {/* <Footer /> */}
         </Router>
       </Auth.Provider>
     </div>

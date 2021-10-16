@@ -57,16 +57,15 @@ function Index() {
       },
     })
       .then((res) => {
-        if (res.data.err) {
-          console.log(res.data.err);
+        if (res.data.error) {
+          console.log(res.data.error);
           setSchedule([]);
-          // error.current.innerHTML=res.data.err;
+          error.current.innerText = res.data.error;
         } else {
           console.log(res.data);
           document.querySelector("#form-schedule").reset();
           setSchedule(res.data.timings);
           setLoading(false);
-          // error.current.innerHTML='';
         }
       })
       .catch((e) => {

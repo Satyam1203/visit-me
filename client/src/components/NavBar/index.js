@@ -86,7 +86,7 @@ function Index() {
   return (
     <Title>
       <h2>
-        <img src={logo} height="24" />
+        <img src={logo} alt="logo" height="24" />
         <Link to="/">visit-me</Link>
       </h2>
       <div className="nav-links">

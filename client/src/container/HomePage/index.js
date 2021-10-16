@@ -3,6 +3,7 @@ import React from "react";
 import NavBar from "../../components/NavBar";
 import Header from "../Header";
 import Services from "../Services";
+import Footer from "../Footer";
 
 function Index() {
   return (
@@ -10,6 +11,7 @@ function Index() {
       <NavBar />
       <Header />
       <Services />
+      <Footer />
     </>
   );
 }

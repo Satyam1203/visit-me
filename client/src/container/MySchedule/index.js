@@ -20,8 +20,8 @@ function Index() {
       cancelToken: source.token,
     })
       .then((res) => {
-        if (res.data.err) {
-          console.log(res.data.err);
+        if (res.data.error) {
+          console.log(res.data.error);
           setSchedule([]);
         } else {
           console.log(res.data);
@@ -62,33 +62,33 @@ function Index() {
         <div>
           {loading ? (
             <Loader />
-          ) : (
-            schedule?.length > 0 && (
-              <div className="table">
-                <table cellSpacing={0} cellPadding={10}>
-                  <thead>
-                    <tr>
-                      <th>Store Name</th>
-                      <th>Visiting Date</th>
-                      <th>Time Slot</th>
-                      <th>Booking Date</th>
+          ) : schedule?.length > 0 ? (
+            <div className="table">
+              <table cellSpacing={0} cellPadding={10}>
+                <thead>
+                  <tr>
+                    <th>Store Name</th>
+                    <th>Visiting Date</th>
+                    <th>Time Slot</th>
+                    <th>Booking Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {schedule.map((dt, i) => (
+                    <tr key={i}>
+                      <td>{dt.store.name}</td>
+                      <td>{new Date(dt.date).toLocaleDateString()}</td>
+                      <td>
+                        {parseInt(dt.time)}:00 - {parseInt(dt.time) + 1}:00
+                      </td>
+                      <td>{new Date(dt.created_at).toLocaleDateString()}</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {schedule.map((dt, i) => (
-                      <tr key={i}>
-                        <td>{dt.store.name}</td>
-                        <td>{new Date(dt.date).toLocaleDateString()}</td>
-                        <td>
-                          {parseInt(dt.time)}:00 - {parseInt(dt.time) + 1}:00
-                        </td>
-                        <td>{new Date(dt.created_at).toLocaleDateString()}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            "No schedule found"
           )}
         </div>
       </div>
