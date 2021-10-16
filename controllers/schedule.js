@@ -4,8 +4,6 @@ const Schedule = require("../models/schedule");
 const User = require("../models/user");
 const Store = require("../models/store");
 
-const maxAllowed = 8;
-
 module.exports = {
   create: async (req, res) => {
     try {
@@ -14,8 +12,9 @@ module.exports = {
       if (req.cookies.user) {
         const { purpose, ...filterBy } = req.body;
         const clashingSchedules = await Schedule.find(filterBy);
+        const store = await Store.findById(req.body.storeId);
 
-        if (clashingSchedules.length > maxAllowed) {
+        if (clashingSchedules.length >= store.max_allowed) {
           res.json({
             error: "This slot is full. Please try another date or time.",
           });
@@ -74,7 +73,7 @@ module.exports = {
     for (let i = openTimeHour; i < closeTimeHour; i++) {
       availableTimings = [
         ...availableTimings,
-        { slot: `${i}:00 - ${i + 1}:00`, count: maxAllowed },
+        { slot: `${i}:00 - ${i + 1}:00`, count: store.max_allowed },
       ];
     }
 

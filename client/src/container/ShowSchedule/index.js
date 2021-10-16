@@ -37,6 +37,7 @@ function Index() {
 
   const getSchedule = (e) => {
     e.preventDefault();
+    setSchedule([]);
     const selectedStore = stores.filter((store) => store._id === storeId);
     const workingDays = selectedStore[0].working_days;
     const day = new Date(date).getDay();

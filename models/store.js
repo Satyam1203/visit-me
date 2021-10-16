@@ -32,6 +32,10 @@ let storeSchema = new mongoose.Schema({
     type: [Number],
     required: true,
   },
+  max_allowed: {
+    type: Number,
+    required: true,
+  },
   refreshTokens: {
     type: [String],
     select: false,
