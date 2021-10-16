@@ -23,7 +23,7 @@ function Store() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const form = document.getElementById("regForm");
+    const form = document.getElementById("regStoreForm");
 
     const workingDaysInputs = Array.from(
       document.getElementsByName("working_days")
@@ -50,7 +50,7 @@ function Store() {
       .then((res) => {
         console.log(res.data);
         setStatus(res.data.msg);
-        if (res.data.registered) form.reset();
+        if (res.data.registered) setFormData({});
       })
       .catch(console.error);
   };
@@ -61,7 +61,7 @@ function Store() {
       <NavBar />
       <div className="form-wrapper">
         <h2>Register your store</h2>
-        <form id="regForm" onSubmit={handleFormSubmit}>
+        <form id="regStoreForm" onSubmit={handleFormSubmit}>
           <div className="input-wrapper">
             <div>Store Name</div>
             <input
@@ -133,6 +133,21 @@ function Store() {
                 </label>
               ))}
             </div>
+          </div>
+          <div className="input-wrapper">
+            <div>Allowed (per hour)</div>
+            <input
+              type="number"
+              value={formData.max_allowed || ""}
+              placeholder={8}
+              min={1}
+              max={12}
+              inputMode="numeric"
+              onChange={(e) =>
+                setFormData({ ...formData, max_allowed: e.target.value })
+              }
+              required
+            />
           </div>
           <div className="input-wrapper">
             <div>Password</div>
