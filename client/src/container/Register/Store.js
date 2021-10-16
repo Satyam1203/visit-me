@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 
 import "../Login/style.css";
 import { useAuth } from "../../App";
+import NavBar from "../../components/NavBar";
 
 export const weekDays = [
   "Sunday",
@@ -23,12 +24,23 @@ function Store() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const form = document.getElementById("regForm");
-    setStatus("");
 
     const workingDaysInputs = Array.from(
       document.getElementsByName("working_days")
     );
-    const working_days = workingDaysInputs.map((el) => el.value);
+    const working_days = workingDaysInputs
+      .map((el) => (el.checked ? Number(el.value) : null))
+      .filter((el) => el !== null);
+    console.log(working_days);
+
+    if (parseInt(formData.opens_at) >= parseInt(formData.closes_at)) {
+      setStatus("Opening time should be before closing time");
+      return;
+    } else if (working_days.length === 0) {
+      setStatus("Please select working days");
+      return;
+    }
+    setStatus("");
 
     axios(`/api/store`, {
       method: "POST",
@@ -38,7 +50,7 @@ function Store() {
       .then((res) => {
         console.log(res.data);
         setStatus(res.data.msg);
-        if (res.data.registered !== undefined) form.reset();
+        if (res.data.registered) form.reset();
       })
       .catch(console.error);
   };
@@ -46,6 +58,7 @@ function Store() {
   if (auth) return <Redirect to="/" />;
   return (
     <>
+      <NavBar />
       <div className="form-wrapper">
         <h2>Register your store</h2>
         <form id="regForm" onSubmit={handleFormSubmit}>
@@ -92,6 +105,7 @@ function Store() {
               onChange={(e) =>
                 setFormData({ ...formData, opens_at: e.target.value })
               }
+              min="00:00"
               step="3600"
               required
             />
@@ -104,6 +118,7 @@ function Store() {
               onChange={(e) =>
                 setFormData({ ...formData, closes_at: e.target.value })
               }
+              min="00:00"
               step="3600"
               required
             />
@@ -132,7 +147,7 @@ function Store() {
           </div>
           <button type="submit">Submit</button>
         </form>
-        <p>{status}</p>
+        <p style={{ color: "red" }}>{status}</p>
       </div>
     </>
   );

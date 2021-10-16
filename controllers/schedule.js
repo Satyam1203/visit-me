@@ -4,17 +4,28 @@ const Schedule = require("../models/schedule");
 const User = require("../models/user");
 const Store = require("../models/store");
 
+const maxAllowed = 8;
+
 module.exports = {
   create: async (req, res) => {
     try {
       const data = jwt_decode(req.cookies.refreshToken);
-      console.log(data);
+      console.log(req.body);
       if (req.cookies.user) {
-        const schedule = await Schedule.create({
-          ...req.body,
-          userId: data.user.id,
-        });
-        res.json(schedule);
+        const { purpose, ...filterBy } = req.body;
+        const clashingSchedules = await Schedule.find(filterBy);
+
+        if (clashingSchedules.length > maxAllowed) {
+          res.json({
+            error: "This slot is full. Please try another date or time.",
+          });
+        } else {
+          const schedule = await Schedule.create({
+            ...req.body,
+            userId: data.user.id,
+          });
+          res.json(schedule);
+        }
       } else {
         res.json({
           error: "Only registered users can create an appointment",
@@ -59,7 +70,6 @@ module.exports = {
 
     const openTimeHour = parseInt(store.opens_at);
     const closeTimeHour = parseInt(store.closes_at);
-    const maxAllowed = 8;
 
     for (let i = openTimeHour; i < closeTimeHour; i++) {
       availableTimings = [

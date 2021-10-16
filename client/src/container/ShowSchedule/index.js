@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
+import NavBar from "../../components/NavBar";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { weekDays } from "../Register/Store";
@@ -69,68 +70,71 @@ function Index() {
   };
 
   return (
-    <div style={{ height: "95vh" }}>
-      <h3 style={{ marginTop: "50px" }}>See available list of slots</h3>
-      <MainDiv>
-        <form id="form-schedule" onSubmit={getSchedule}>
-          <select
-            name="store"
-            className="input-div"
-            onChange={(e) => setStoreId(e.target.value)}
-            required
-          >
-            {stores.length > 0 && [
-              <option value="" key="0">
-                Select Store
-              </option>,
-              stores.map((store) => (
-                <option value={store._id} key={store._id}>
-                  {store.name}
-                </option>
-              )),
-            ]}
-          </select>
-          <Input
-            type="date"
-            upLabel="Date"
-            name="date"
-            inputMode="none"
-            onChange={(e) => setDate(e.target.value)}
-            min={`${new Date().getFullYear()}-${
-              Number(new Date().getMonth()) < 9
-                ? `0${Number(new Date().getMonth()) + 1}`
-                : Number(new Date().getMonth()) + 1
-            }-${
-              Number(new Date().getDate() + 1) < 10
-                ? `0${new Date().getDate() + 1}`
-                : new Date().getDate() + 1
-            }`}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-        <span ref={error} style={{ color: "red" }}></span>
-      </MainDiv>
-      {schedule.length > 0 && (
-        <div className="table">
-          <table>
-            <thead>
-              <tr>
-                <th>Time</th>
-                <th>Available slots</th>
-              </tr>
-            </thead>
-            <tbody>
-              {schedule.map((s, i) => (
-                <tr key={i}>
-                  <td>{s.slot}</td>
-                  <td>{s.count}</td>
+    <>
+      <NavBar />
+      <div style={{ height: "95vh" }}>
+        <h3 style={{ marginTop: "50px" }}>See available list of slots</h3>
+        <MainDiv>
+          <form id="form-schedule" onSubmit={getSchedule}>
+            <select
+              name="store"
+              className="input-div"
+              onChange={(e) => setStoreId(e.target.value)}
+              required
+            >
+              {stores.length > 0 && [
+                <option value="" key="0">
+                  Select Store
+                </option>,
+                stores.map((store) => (
+                  <option value={store._id} key={store._id}>
+                    {store.name}
+                  </option>
+                )),
+              ]}
+            </select>
+            <Input
+              type="date"
+              upLabel="Date"
+              name="date"
+              inputMode="none"
+              onChange={(e) => setDate(e.target.value)}
+              min={`${new Date().getFullYear()}-${
+                Number(new Date().getMonth()) < 9
+                  ? `0${Number(new Date().getMonth()) + 1}`
+                  : Number(new Date().getMonth()) + 1
+              }-${
+                Number(new Date().getDate() + 1) < 10
+                  ? `0${new Date().getDate() + 1}`
+                  : new Date().getDate() + 1
+              }`}
+            />
+            <Button type="submit">Submit</Button>
+          </form>
+          <span ref={error} style={{ color: "red" }}></span>
+        </MainDiv>
+        {schedule.length > 0 && (
+          <div className="table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Available slots</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
+              </thead>
+              <tbody>
+                {schedule.map((s, i) => (
+                  <tr key={i}>
+                    <td>{s.slot}</td>
+                    <td>{s.count}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 
 import "./style.css";
 import { useAuth } from "../../App";
+import NavBar from "../../components/NavBar";
 
 function Login() {
   const { auth, setauth, setIsUser } = useAuth();
@@ -42,59 +43,62 @@ function Login() {
 
   if (auth) return <Redirect to="/" />;
   return (
-    <div className="form-wrapper">
-      <h2>Log In</h2>
-      <div id="loginForm" className="form-item">
-        <label>
-          Email
-          <br />
-          <input
-            type="text"
-            value={email}
-            autoFocus
-            title="Please enter your registered email"
-            onChange={(e) => setemail(e.target.value)}
-          />
-        </label>
+    <>
+      <NavBar />
+      <div className="form-wrapper">
+        <h2>Log In</h2>
+        <div id="loginForm" className="form-item">
+          <label>
+            Email
+            <br />
+            <input
+              type="text"
+              value={email}
+              autoFocus
+              title="Please enter your registered email"
+              onChange={(e) => setemail(e.target.value)}
+            />
+          </label>
+        </div>
+        <div className="form-item">
+          <label>
+            Password
+            <br />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+        </div>
+        <div className="form-item">
+          Login as <br />
+          <label>
+            <input
+              type="radio"
+              value="user"
+              name="type"
+              defaultChecked
+              onClick={(e) => setType(e.target.value)}
+            />
+            User
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="store"
+              name="type"
+              onClick={(e) => setType(e.target.value)}
+            />
+            Store
+          </label>
+        </div>
+        <div style={{ color: "red", fontSize: "12px", height: "20px" }}>
+          {loginStatus}
+        </div>
+        <button onClick={handleFormSubmit}>Log In</button>
       </div>
-      <div className="form-item">
-        <label>
-          Password
-          <br />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-      </div>
-      <div className="form-item">
-        Login as <br />
-        <label>
-          <input
-            type="radio"
-            value="user"
-            name="type"
-            defaultChecked
-            onClick={(e) => setType(e.target.value)}
-          />
-          User
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="store"
-            name="type"
-            onClick={(e) => setType(e.target.value)}
-          />
-          Store
-        </label>
-      </div>
-      <div style={{ color: "red", fontSize: "12px", height: "20px" }}>
-        {loginStatus}
-      </div>
-      <button onClick={handleFormSubmit}>Log In</button>
-    </div>
+    </>
   );
 }
 

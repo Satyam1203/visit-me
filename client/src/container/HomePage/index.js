@@ -1,15 +1,17 @@
-import React from 'react';
+import React from "react";
 
-import Header from '../Header';
-import Services from '../Services';
+import NavBar from "../../components/NavBar";
+import Header from "../Header";
+import Services from "../Services";
 
 function Index() {
-    return (
-        <>
-            <Header />
-            <Services />
-        </>
-    )
+  return (
+    <>
+      <NavBar />
+      <Header />
+      <Services />
+    </>
+  );
 }
 
 export default Index;

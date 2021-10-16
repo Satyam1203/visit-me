@@ -1,10 +1,10 @@
-.services{
-    width: 100%;
-    padding:20px;
-    padding-top: 100px;
-    display: flex;
-    flex-direction: column;
+.services {
+  width: 100%;
+  padding: 20px;
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
 }
-.services h1{
-    color: darkslateblue;
+.services h1 {
+  color: darkslateblue;
 }
