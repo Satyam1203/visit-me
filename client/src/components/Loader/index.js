@@ -1,9 +1,9 @@
 import React from "react";
 import "./style.css";
 
-function index() {
+function index({ inline }) {
   return (
-    <div className="loader-bubble">
+    <div className={`loader-bubble ${inline && "inline"}`}>
       <div className="bubble">
         <div className="bubble-child bubble-first"></div>
       </div>

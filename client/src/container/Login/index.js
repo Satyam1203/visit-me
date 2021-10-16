@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 
 import "./style.css";
 import { useAuth } from "../../App";
+import Loader from "../../components/Loader";
 import NavBar from "../../components/NavBar";
 
 function Login() {
@@ -12,13 +13,16 @@ function Login() {
   const [password, setPassword] = useState("");
   const [type, setType] = useState("user");
   const [loginStatus, setLoginStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = () => {
+    if (loading) return;
     console.log(email, password, type);
     if (!email || !password) {
       setLoginStatus("Enter credentials");
       return;
     }
+    setLoading(true);
     setLoginStatus("");
     axios(`/api/${type}/login`, {
       method: "POST",
@@ -37,8 +41,12 @@ function Login() {
           ] = `Bearer ${res.data.accessToken}`;
           setauth(true);
         }
+        setLoading(false);
       })
-      .catch(console.error);
+      .catch((e) => {
+        console.error(e);
+        setLoading(false);
+      });
   };
 
   if (auth) return <Redirect to="/" />;
@@ -96,7 +104,9 @@ function Login() {
         <div style={{ color: "red", fontSize: "12px", height: "20px" }}>
           {loginStatus}
         </div>
-        <button onClick={handleFormSubmit}>Log In</button>
+        <button onClick={handleFormSubmit}>
+          {loading ? <Loader inline /> : "Log In"}
+        </button>
       </div>
     </>
   );

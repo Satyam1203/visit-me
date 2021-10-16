@@ -63,25 +63,29 @@ module.exports = {
     }
   },
   getByDate: async (req, res) => {
-    let availableTimings = [];
-    const store = await Store.findById(req.body.storeId);
-    const schedule = await Schedule.find({ ...req.body });
+    try {
+      let availableTimings = [];
+      const store = await Store.findById(req.body.storeId);
+      const schedule = await Schedule.find({ ...req.body });
 
-    const openTimeHour = parseInt(store.opens_at);
-    const closeTimeHour = parseInt(store.closes_at);
+      const openTimeHour = parseInt(store.opens_at);
+      const closeTimeHour = parseInt(store.closes_at);
 
-    for (let i = openTimeHour; i < closeTimeHour; i++) {
-      availableTimings = [
-        ...availableTimings,
-        { slot: `${i}:00 - ${i + 1}:00`, count: store.max_allowed },
-      ];
+      for (let i = openTimeHour; i < closeTimeHour; i++) {
+        availableTimings = [
+          ...availableTimings,
+          { slot: `${i}:00 - ${i + 1}:00`, count: store.max_allowed },
+        ];
+      }
+
+      schedule.forEach((s) => {
+        const idx = parseInt(s.time) - openTimeHour;
+        availableTimings[idx].count -= 1;
+      });
+
+      res.json({ timings: availableTimings });
+    } catch (e) {
+      res.json({ error: e.message });
     }
-
-    schedule.forEach((s) => {
-      const idx = parseInt(s.time) - openTimeHour;
-      availableTimings[idx].count -= 1;
-    });
-
-    res.json({ timings: availableTimings });
   },
 };
