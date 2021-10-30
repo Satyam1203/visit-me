@@ -13,8 +13,18 @@ module.exports = {
         const { purpose, ...filterBy } = req.body;
         const clashingSchedules = await Schedule.find(filterBy);
         const store = await Store.findById(req.body.storeId);
+        const userScheduleExists = await Schedule.find({
+          userId: data.user.id,
+          storeId: req.body.storeId,
+          date: req.body.date,
+          time: req.body.time,
+        });
 
-        if (clashingSchedules.length >= store.max_allowed) {
+        if (userScheduleExists.length > 0) {
+          res.json({
+            error: "You already have an appointment at this time",
+          });
+        } else if (clashingSchedules.length >= store.max_allowed) {
           res.json({
             error: "This slot is full. Please try another date or time.",
           });
@@ -84,6 +94,25 @@ module.exports = {
       });
 
       res.json({ timings: availableTimings });
+    } catch (e) {
+      res.json({ error: e.message });
+    }
+  },
+  delete: async (req, res) => {
+    try {
+      const updateSchedule = await Schedule.updateOne(
+        { _id: req.body.id },
+        { active: false }
+      );
+
+      if (updateSchedule.nModified) {
+        res.json({
+          updated: updateSchedule.nModified,
+          msg: "Deleted Successfully!",
+        });
+      } else {
+        res.json({ updated: 0 });
+      }
     } catch (e) {
       res.json({ error: e.message });
     }

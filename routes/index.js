@@ -19,6 +19,7 @@ router.route("/store/login").post(storeController.login);
 router.route("/schedule").post(scheduleController.create);
 router.route("/schedule/find/user").post(scheduleController.getByUser);
 router.route("/schedule/find/date").post(scheduleController.getByDate);
+router.route("/schedule/delete").post(scheduleController.delete);
 
 router.use("/authenticate", authenticate, (req, res) => {
   res.json(req.user);

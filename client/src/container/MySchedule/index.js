@@ -37,15 +37,22 @@ function Index() {
     };
   }, []);
 
-  const deleteAppointment = (id) => {
-    axios({
+  const deleteAppointment = (id, idx) => {
+    axios("/api/schedule/delete", {
       method: "POST",
-      url: `${process.env.REACT_APP_SERVER_URL}/remove-appt/${id}`,
+      data: { id },
     })
       .then((res) => {
-        if (res.data.msg) {
+        if (res.data.updated) {
+          const updatedSchedule = [...schedule];
+          updatedSchedule[idx].active = false;
+
+          setSchedule(updatedSchedule);
           console.log(res.data.msg);
-        } else console.error(res.data.err);
+        } else {
+          console.error(res.data.error);
+        }
+        console.log(schedule);
       })
       .catch((e) => {
         console.error(e);
@@ -72,6 +79,7 @@ function Index() {
                     <th>Visiting Date</th>
                     <th>Time Slot</th>
                     <th>Booking Date</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -83,6 +91,15 @@ function Index() {
                         {parseInt(dt.time)}:00 - {parseInt(dt.time) + 1}:00
                       </td>
                       <td>{new Date(dt.created_at).toLocaleDateString()}</td>
+                      <td>
+                        {dt.active ? (
+                          <button onClick={() => deleteAppointment(dt._id, i)}>
+                            Delete
+                          </button>
+                        ) : (
+                          "Inactive"
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

@@ -24,16 +24,14 @@
   border-top: 3px solid salmon;
 }
 .table button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  outline: none;
-  padding: 6px;
-  margin-top: -1rem;
-  cursor: pointer;
   border: none;
-  background: none;
-  /* border: 1px solid salmon; */
+  background-color: transparent;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.table button:hover {
+  text-decoration: none;
+  color: #333;
 }
 @media screen and (max-width: 767px) {
   .table {
