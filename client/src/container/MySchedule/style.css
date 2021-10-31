@@ -16,6 +16,9 @@
 .table tr {
   border-color: transparent;
 }
+.table tr.inactive {
+  background-color: #ff777777;
+}
 .table td {
   border-right: 2px solid peachpuff;
   text-align: center;

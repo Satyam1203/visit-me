@@ -11,13 +11,18 @@ module.exports = {
       console.log(req.body);
       if (req.cookies.user) {
         const { purpose, ...filterBy } = req.body;
-        const clashingSchedules = await Schedule.find(filterBy);
+        const clashingSchedules = await Schedule.find({
+          ...filterBy,
+          active: true,
+        });
+
         const store = await Store.findById(req.body.storeId);
         const userScheduleExists = await Schedule.find({
           userId: data.user.id,
           storeId: req.body.storeId,
           date: req.body.date,
           time: req.body.time,
+          active: true,
         });
 
         if (userScheduleExists.length > 0) {
@@ -76,7 +81,7 @@ module.exports = {
     try {
       let availableTimings = [];
       const store = await Store.findById(req.body.storeId);
-      const schedule = await Schedule.find({ ...req.body });
+      const schedule = await Schedule.find({ ...req.body, active: true });
 
       const openTimeHour = parseInt(store.opens_at);
       const closeTimeHour = parseInt(store.closes_at);
@@ -94,6 +99,34 @@ module.exports = {
       });
 
       res.json({ timings: availableTimings });
+    } catch (e) {
+      res.json({ error: e.message });
+    }
+  },
+  getByStore: async (req, res) => {
+    try {
+      let schedule;
+      const { user } = jwt_decode(req.cookies.refreshToken);
+
+      if (req.cookies.store) {
+        schedule = await Schedule.find({ storeId: user.id });
+      } else {
+        throw new Error("Please Log-In");
+      }
+
+      if (!schedule) {
+        res.json({ found: false });
+      } else {
+        schedule = await Promise.all(
+          schedule.map(async (appt) => {
+            const user = await User.findById(appt.userId);
+
+            return { ...appt._doc, user };
+          })
+        );
+
+        res.json({ schedule });
+      }
     } catch (e) {
       res.json({ error: e.message });
     }

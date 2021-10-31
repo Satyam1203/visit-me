@@ -6,6 +6,8 @@ import "./style.css";
 import { useAuth } from "../../App";
 import NavBar from "../../components/NavBar";
 import Loader from "../../components/Loader";
+import UserSchedule from "../UserSchedule";
+import StoreSchedule from "../StoreSchedule";
 
 function Index() {
   const { isUser } = useAuth();
@@ -15,17 +17,17 @@ function Index() {
   useEffect(() => {
     const source = axios.CancelToken.source();
 
-    axios("/api/schedule/find/user", {
+    axios(`/api/schedule/find/${isUser ? "user" : "store"}`, {
       method: "POST",
       cancelToken: source.token,
     })
       .then((res) => {
+        setLoading(false);
         if (res.data.error) {
           console.log(res.data.error);
           setSchedule([]);
         } else {
           console.log(res.data);
-          setLoading(false);
           setSchedule(res.data.schedule);
         }
       })
@@ -60,7 +62,6 @@ function Index() {
   };
 
   if (isUser === null) return <Redirect to="/login" />;
-  else if (isUser === false) return <Redirect to="/" />;
 
   return (
     <>
@@ -72,38 +73,14 @@ function Index() {
             <Loader />
           ) : schedule?.length > 0 ? (
             <div className="table">
-              <table cellSpacing={0} cellPadding={10}>
-                <thead>
-                  <tr>
-                    <th>Store Name</th>
-                    <th>Visiting Date</th>
-                    <th>Time Slot</th>
-                    <th>Booking Date</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {schedule.map((dt, i) => (
-                    <tr key={i}>
-                      <td>{dt.store.name}</td>
-                      <td>{new Date(dt.date).toLocaleDateString()}</td>
-                      <td>
-                        {parseInt(dt.time)}:00 - {parseInt(dt.time) + 1}:00
-                      </td>
-                      <td>{new Date(dt.created_at).toLocaleDateString()}</td>
-                      <td>
-                        {dt.active ? (
-                          <button onClick={() => deleteAppointment(dt._id, i)}>
-                            Delete
-                          </button>
-                        ) : (
-                          "Inactive"
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              {isUser ? (
+                <UserSchedule
+                  schedule={schedule}
+                  deleteAppointment={deleteAppointment}
+                />
+              ) : (
+                <StoreSchedule schedule={schedule} />
+              )}
             </div>
           ) : (
             "No schedule found"

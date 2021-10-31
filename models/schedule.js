@@ -23,7 +23,7 @@ let scheduleSchema = new mongoose.Schema({
   },
   active: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   created_at: {
     type: Date,

@@ -127,7 +127,9 @@ function Index() {
               name="time"
               inputMode="text"
               min={stores?.find((s) => s._id === storeId)?.opens_at}
-              max={stores?.find((s) => s._id === storeId)?.closes_at}
+              max={`${
+                parseInt(stores?.find((s) => s._id === storeId)?.closes_at) - 1
+              }:00`}
               step="3600"
               onChange={(e) => setTime(e.target.value)}
             />
