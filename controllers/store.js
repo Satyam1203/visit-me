@@ -1,4 +1,6 @@
+const jwt_decode = require("jwt-decode");
 const bcrypt = require("bcrypt");
+
 const User = require("../models/user");
 const Store = require("../models/store");
 const authController = require("./auth");
@@ -31,7 +33,7 @@ module.exports = {
   },
   get: async (req, res) => {
     try {
-      const store = await Store.find({ email: req.body.email });
+      const store = await Store.find({ email: req.body.email, active: true });
       res.json(store);
     } catch (e) {
       res.json({ error: e.message });
@@ -39,8 +41,84 @@ module.exports = {
   },
   getAll: async (req, res) => {
     try {
-      const stores = await Store.find();
+      const stores = await Store.find({ active: true });
       res.json({ stores });
+    } catch (e) {
+      res.json({ error: e.message });
+    }
+  },
+  getCurrentStore: async (req, res) => {
+    try {
+      let store;
+      const { user } = jwt_decode(req.cookies.refreshToken);
+
+      if (req.cookies.store) {
+        store = await Store.findOne({ _id: user.id, active: true });
+      } else {
+        throw new Error("Please Log-In as store");
+      }
+
+      if (!store) {
+        res.json({ error: "Please try again", found: false });
+      } else {
+        res.json({ store });
+      }
+    } catch (e) {
+      res.json({ error: e.message });
+    }
+  },
+  update: async (req, res) => {
+    try {
+      let updated;
+      const { user } = jwt_decode(req.cookies.refreshToken);
+
+      if (req.cookies.store) {
+        updated = await Store.updateOne(
+          { _id: user.id, active: true },
+          {
+            phone: req.body.phone,
+            opens_at: req.body.opens_at,
+            closes_at: req.body.closes_at,
+            working_days: req.body.working_days,
+            max_allowed: req.body.max_allowed,
+          }
+        );
+      } else {
+        throw new Error("Please Log-In as store");
+      }
+
+      if (updated.nModified) {
+        res.json({ msg: "Your store details are updated.", updated: true });
+      } else {
+        res.json({ msg: "Failed Updating. Please try again", updated: false });
+      }
+    } catch (e) {
+      res.json({ error: e.message });
+    }
+  },
+  delete: async (req, res) => {
+    try {
+      let deleted;
+      const { user } = jwt_decode(req.cookies.refreshToken);
+
+      if (req.cookies.store) {
+        deleted = await Store.updateOne({ _id: user.id }, { active: false });
+      } else {
+        throw new Error("Please Log-In as store");
+      }
+      console.log(deleted);
+
+      if (deleted.nModified) {
+        res.clearCookie("refreshToken");
+        if (req?.cookies?.store) res.clearCookie("store");
+
+        res.json({
+          deleted: true,
+          msg: "Deleted Successfully!",
+        });
+      } else {
+        res.json({ deleted: false });
+      }
     } catch (e) {
       res.json({ error: e.message });
     }

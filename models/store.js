@@ -36,6 +36,10 @@ let storeSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  active: {
+    type: Boolean,
+    default: true,
+  },
   refreshTokens: {
     type: [String],
     select: false,

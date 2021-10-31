@@ -20,6 +20,10 @@ let userSchema = new mongoose.Schema({
     required: true,
     select: false,
   },
+  active: {
+    type: Boolean,
+    default: true,
+  },
   refreshTokens: {
     type: [String],
     select: false,

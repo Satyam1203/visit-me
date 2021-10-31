@@ -65,11 +65,18 @@ module.exports = {
       } else {
         schedule = await Promise.all(
           schedule.map(async (appt) => {
-            const store = await Store.findById(appt.storeId);
+            const store = await Store.findOne({
+              _id: appt.storeId,
+              active: true,
+            });
+
+            if (!store) return {};
 
             return { ...appt._doc, store };
           })
         );
+
+        schedule = await schedule.filter((s) => Object.keys(s).length > 0);
 
         res.json({ schedule });
       }
@@ -80,7 +87,10 @@ module.exports = {
   getByDate: async (req, res) => {
     try {
       let availableTimings = [];
-      const store = await Store.findById(req.body.storeId);
+      const store = await Store.findOne({
+        _id: req.body.storeId,
+        active: true,
+      });
       const schedule = await Schedule.find({ ...req.body, active: true });
 
       const openTimeHour = parseInt(store.opens_at);

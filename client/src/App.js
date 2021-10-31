@@ -9,6 +9,7 @@ import MySchedule from "./container/MySchedule";
 import Login from "./container/Login";
 import RegisterUser from "./container/Register/User";
 import RegisterStore from "./container/Register/Store";
+import ManageStore from "./container/ManageStore";
 import NotFound from "./components/NotFound";
 import authInit from "./helpers/authInit";
 
@@ -40,6 +41,7 @@ function App() {
             <Route path="/login" component={Login} />
             <Route path="/register/user" component={RegisterUser} />
             <Route path="/register/store" component={RegisterStore} />
+            <Route path="/manage/store" component={ManageStore} />
             <Route path="*" component={NotFound} />
           </Switch>
         </Router>

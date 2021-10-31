@@ -14,7 +14,7 @@ module.exports = {
   login: async function (req, res, Model) {
     try {
       const email = req.body.email;
-      const user = await Model.findOne({ email })
+      const user = await Model.findOne({ email, active: true })
         .select("+password")
         .select("+refreshTokens");
       console.log(user);
@@ -22,7 +22,7 @@ module.exports = {
       if (!user) {
         res.json({
           authenticated: false,
-          msg: "Sorry, we can't find your profile, please register yourself",
+          msg: "Sorry, email is inactive or unregistered. Please register one.",
         });
       } else {
         const verified = await bcrypt.compareSync(

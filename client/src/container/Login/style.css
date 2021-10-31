@@ -69,3 +69,12 @@
   margin: 8px 4px;
   cursor: pointer;
 }
+
+.form-wrapper .update-btn,
+.form-wrapper .delete-btn {
+  width: auto;
+}
+
+.form-wrapper .delete-btn {
+  background-color: rgb(255, 90, 90);
+}

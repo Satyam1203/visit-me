@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 import logo from "../../logo.svg";
 import { useAuth } from "../../App";
+import { logout } from "../../helpers/logout";
 
 const Title = styled.div`
   display: flex;
@@ -69,19 +70,7 @@ const Title = styled.div`
 `;
 
 function Index() {
-  const { auth, setauth } = useAuth();
-
-  const logout = () => {
-    axios("/api/logout", { method: "POST" })
-      .then((res) => {
-        console.log(res.data);
-        if (res.data.authenticated === false) {
-          localStorage.removeItem("isUser");
-          setauth(res.authenticated);
-        }
-      })
-      .catch(console.error);
-  };
+  const { auth, setauth, isUser, setIsUser } = useAuth();
 
   return (
     <Title>
@@ -90,8 +79,9 @@ function Index() {
         <Link to="/">visit-me</Link>
       </h2>
       <div className="nav-links">
+        {auth && isUser === false && <Link to="/manage/store">Manage</Link>}
         {auth ? (
-          <a onClick={logout}>Logout</a>
+          <a onClick={() => logout(setauth, setIsUser)}>Logout</a>
         ) : (
           <>
             <div className="dropdown-select">
