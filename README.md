@@ -15,7 +15,7 @@ This web application helps offline stores and users to maintain covid norms by t
 
 - Register.
 - Add an appointement to any of registered stores.
-- Manage your appointments.
+- Manage your appointments. (List or delete the appointments)
 - Find available slots for each store.
 
 #### Store:
@@ -23,6 +23,8 @@ This web application helps offline stores and users to maintain covid norms by t
 - Register.
 - Specify timings and days when shops are opened.
 - Specify maximum allowed bookings per hour.
-- View appointments for your store.
+- List appointments for your store. (and see if they are deleted by the user)
+- Update store preferences. (timings, allowed limit, working days)
+- Remove the store from the portal.
 
 > Contributions are welcome. Open an issue to discuss.
