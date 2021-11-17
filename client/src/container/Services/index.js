@@ -26,7 +26,7 @@ function Index() {
 
       <ContentBox
         title="Manage Appointments"
-        description="One place to look for all the appointment/schedules you've created and lookup your schedule and cancel any time before the scheduled day"
+        description="One place to look for all the appointment/schedules linked to your profile and lookup your schedule and cancel any time before the scheduled day"
         link="/show"
         button="Manage my appoinments ➡"
         img="https://images.pexels.com/photos/162583/work-workplace-office-computer-162583.jpeg?auto=compress&cs=tinysrgb&h=300"

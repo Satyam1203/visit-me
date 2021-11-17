@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -65,6 +64,10 @@ const Title = styled.div`
     }
     .nav-links {
       font-size: 14px;
+
+      .hide-small-screen-link {
+        display: none;
+      }
     }
   }
 `;
@@ -79,9 +82,20 @@ function Index() {
         <Link to="/">visit-me</Link>
       </h2>
       <div className="nav-links">
-        {auth && isUser === false && <Link to="/manage/store">Manage</Link>}
+        {auth && isUser === false && (
+          <Link to="/manage/store">Manage Profile</Link>
+        )}
+        {auth && isUser === true && <Link to="/add">Schedule visit</Link>}
         {auth ? (
-          <a onClick={() => logout(setauth, setIsUser)}>Logout</a>
+          <>
+            <Link to="/show" className="hide-small-screen-link">
+              Appointments
+            </Link>
+            <Link to="/available" className="hide-small-screen-link">
+              View slots
+            </Link>
+            <a onClick={() => logout(setauth, setIsUser)}>Logout</a>
+          </>
         ) : (
           <>
             <div className="dropdown-select">

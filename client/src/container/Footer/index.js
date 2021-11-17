@@ -14,5 +14,10 @@ const FooterDiv = styled.div`
 `;
 
 export default function Footer() {
-  return <FooterDiv>All rights reserved. © visit-me</FooterDiv>;
+  return (
+    <>
+      <FooterDiv>All rights reserved. © visit-me</FooterDiv>
+      <p style={{ margin: "8px 0" }}>This website uses cookies.</p>
+    </>
+  );
 }

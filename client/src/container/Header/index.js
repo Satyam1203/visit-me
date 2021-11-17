@@ -9,8 +9,8 @@ export default function Index() {
       <div className="title">
         <h1 style={{ padding: "10px 0px" }}>visit-me</h1>
         <p>
-          Book online appointments for your offline visits. Maintain distancing
-          norms and visit your favorite store.
+          Book online appointments for your offline visits. Register now and
+          book an appointment to any registered store.
         </p>
         <a href="#services-section">
           <Button borderRadius="2rem">Get started</Button>
