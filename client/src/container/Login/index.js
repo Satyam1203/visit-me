@@ -4,7 +4,6 @@ import { Redirect } from "react-router-dom";
 
 import "./style.css";
 import { useAuth } from "../../App";
-import Loader from "../../components/Loader";
 import NavBar from "../../components/NavBar";
 
 function Login() {
@@ -15,23 +14,19 @@ function Login() {
   const [loginStatus, setLoginStatus] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleFormSubmit = () => {
-    if (loading) return;
-    console.log(email, password, type);
-    if (!email || !password) {
-      setLoginStatus("Enter credentials");
-      return;
-    }
+  const requestLogin = (id, pwd, userType = null) => {
     setLoading(true);
     setLoginStatus("");
-    axios(`/api/${type}/login`, {
+
+    axios(`/api/${userType ?? type}/login`, {
       method: "POST",
-      data: { email, password },
+      data: { email: id, password: pwd },
       "Content-Type": "application/json",
       withCredentials: true,
     })
       .then((res) => {
         setLoginStatus(res.data.msg);
+        setLoading(false);
         if (res.data.authenticated && res.data.accessToken !== undefined) {
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("isUser", res.data.isUser);
@@ -41,12 +36,31 @@ function Login() {
           ] = `Bearer ${res.data.accessToken}`;
           setauth(true);
         }
-        setLoading(false);
       })
       .catch((e) => {
         console.error(e);
         setLoading(false);
       });
+  };
+
+  const handleFormSubmit = () => {
+    if (loading) return;
+    if (!email || !password) {
+      setLoginStatus("Please enter credentials");
+      return;
+    }
+
+    requestLogin(email, password);
+  };
+
+  const loginAsGuestUser = () => {
+    if (loading) return;
+    requestLogin("sa@12.com", "12");
+  };
+
+  const loginAsGuestStore = () => {
+    if (loading) return;
+    requestLogin("shah@hmail.com", "12", "store");
   };
 
   if (auth) return <Redirect to="/" />;
@@ -91,7 +105,7 @@ function Login() {
             />
             User
           </label>
-          <label>
+          <label style={{ marginLeft: "16px" }}>
             <input
               type="radio"
               value="store"
@@ -104,8 +118,28 @@ function Login() {
         <div style={{ color: "red", fontSize: "12px", height: "20px" }}>
           {loginStatus}
         </div>
-        <button onClick={handleFormSubmit}>
-          {loading ? <Loader inline /> : "Log In"}
+        <button onClick={handleFormSubmit} disabled={loading}>
+          Log In
+        </button>
+      </div>
+      <span>
+        OR <br />
+        Log In as
+      </span>
+      <div>
+        <button
+          className="form-submit-btn"
+          onClick={loginAsGuestUser}
+          disabled={loading}
+        >
+          Guest user
+        </button>
+        <button
+          className="form-submit-btn"
+          onClick={loginAsGuestStore}
+          disabled={loading}
+        >
+          Guest store
         </button>
       </div>
     </>

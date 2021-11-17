@@ -26,6 +26,10 @@
   margin-right: 18px;
 }
 
+.form-wrapper label {
+  cursor: pointer;
+}
+
 .form-wrapper form {
   display: flex;
   flex-direction: column;
@@ -57,7 +61,8 @@
   }
 }
 
-.form-wrapper button {
+.form-wrapper button,
+.form-submit-btn {
   background-color: #0a79df;
   color: #fff;
   font-size: 16px;
@@ -68,6 +73,15 @@
   border-radius: 8px;
   margin: 8px 4px;
   cursor: pointer;
+}
+
+.form-submit-btn {
+  width: 150px;
+}
+
+.form-wrapper button:hover,
+.form-submit-btn:hover {
+  background-color: #2687e2;
 }
 
 .form-wrapper .update-btn,
